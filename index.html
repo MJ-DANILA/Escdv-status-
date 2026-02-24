@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DVA LIVE DASHBOARD</title>
+    <title>DVA ADMIN DASHBOARD</title>
     <style>
         * {
             margin: 0;
@@ -12,13 +12,11 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
-       body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
         
         .container {
             max-width: 500px;
@@ -64,6 +62,24 @@
             0% { opacity: 1; }
             50% { opacity: 0.7; }
             100% { opacity: 1; }
+        }
+        
+        .unauthorized {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        
+        .unauthorized h1 {
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+        
+        .unauthorized p {
+            color: #666;
+            margin: 10px 0;
         }
         
         .stats-grid {
@@ -174,82 +190,119 @@
         .refresh-btn:hover {
             background: #f0f0f0;
         }
+        
+        .admin-id {
+            font-size: 10px;
+            color: #999;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📊 DVA LIVE DASHBOARD <span>v20.0</span></h1>
-            <div class="live-badge" id="liveIndicator">🔴 LIVE</div>
-            <div style="margin-top: 10px; color: #666;" id="timestamp">Loading...</div>
-            <div style="margin-top: 5px; font-size: 12px; color: #999;" id="groupsCount"></div>
-            <button class="refresh-btn" onclick="fetchData()">🔄 Refresh Now</button>
+        <div id="unauthorizedMsg" class="unauthorized" style="display: none;">
+            <h1>🔒 Access Denied</h1>
+            <p>This dashboard is only available for MAIN ADMIN and DEVELOPER.</p>
+            <p id="userIdDisplay"></p>
+            <p>Contact @MR_JOKER_UP for access.</p>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">💰 TOTAL VOLUME</div>
-                <div class="stat-value" id="totalVolume">$0</div>
+        <div id="dashboardContent">
+            <div class="header">
+                <h1>📊 DVA ADMIN DASHBOARD <span>v20.0</span></h1>
+                <div class="live-badge" id="liveIndicator">🔴 LIVE</div>
+                <div style="margin-top: 10px; color: #666;" id="timestamp">Loading...</div>
+                <div style="margin-top: 5px; font-size: 12px; color: #999;" id="groupsCount"></div>
+                <div class="admin-id" id="adminId"></div>
+                <button class="refresh-btn" onclick="fetchData()">🔄 Refresh Now</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">🇪🇹 ETB VOLUME</div>
-                <div class="stat-value" id="etbVolume">0 ETB</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">💵 USD VOLUME</div>
-                <div class="stat-value" id="usdVolume">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">📊 TOTAL DEALS</div>
-                <div class="stat-value" id="totalDeals">0</div>
-            </div>
-        </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">✅ COMPLETED</div>
-                <div class="stat-value" id="completedDeals">0</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">💰 TOTAL VOLUME</div>
+                    <div class="stat-value" id="totalVolume">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🇪🇹 ETB VOLUME</div>
+                    <div class="stat-value" id="etbVolume">0 ETB</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">💵 USD VOLUME</div>
+                    <div class="stat-value" id="usdVolume">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">📊 TOTAL DEALS</div>
+                    <div class="stat-value" id="totalDeals">0</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">💰 REFUNDED</div>
-                <div class="stat-value" id="refundedDeals">0</div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">✅ COMPLETED</div>
+                    <div class="stat-value" id="completedDeals">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">💰 REFUNDED</div>
+                    <div class="stat-value" id="refundedDeals">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">❌ CANCELLED</div>
+                    <div class="stat-value" id="cancelledDeals">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">⚡ ACTIVE</div>
+                    <div class="stat-value" id="activeDeals">0</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">❌ CANCELLED</div>
-                <div class="stat-value" id="cancelledDeals">0</div>
+
+            <div class="admin-section">
+                <div class="section-title">👑 ADMIN LEADERBOARD</div>
+                <div id="adminList">Loading admin data...</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">⚡ ACTIVE</div>
-                <div class="stat-value" id="activeDeals">0</div>
+
+            <div class="admin-section">
+                <div class="section-title">⭐ TOP USERS</div>
+                <div id="userList">Loading user data...</div>
             </div>
-        </div>
 
-        <div class="admin-section">
-            <div class="section-title">👑 ADMIN LEADERBOARD</div>
-            <div id="adminList">Loading admin data...</div>
-        </div>
+            <div class="admin-section">
+                <div class="section-title">🔄 RECENT DEALS</div>
+                <div id="recentDealsList">Loading recent deals...</div>
+            </div>
 
-        <div class="admin-section">
-            <div class="section-title">⭐ TOP USERS</div>
-            <div id="userList">Loading user data...</div>
-        </div>
-
-        <div class="admin-section">
-            <div class="section-title">🔄 RECENT DEALS</div>
-            <div id="recentDealsList">Loading recent deals...</div>
-        </div>
-
-        <div class="footer">
-            🤖 DVA BOT | 👨‍💻 @MR_JOKER_UP<br>
-            <span id="updateTime"></span>
+            <div class="footer">
+                🤖 DVA BOT | 👨‍💻 @MR_JOKER_UP<br>
+                <span id="updateTime"></span>
+            </div>
         </div>
     </div>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // Live dashboard data - REPLACE WITH YOUR API URL LATER
         const API_URL = 'http://localhost:5000/api/dashboard-data';
+        const MAIN_ADMIN_ID = '8216037421';
+        const DEVELOPER_ID = '16037421';
         
-        // Mock data for demonstration (will be replaced by real API data)
+        const Telegram = window.Telegram.WebApp;
+        Telegram.ready();
+        Telegram.expand();
+        
+        const userId = Telegram.initDataUnsafe?.user?.id?.toString() || '';
+        const username = Telegram.initDataUnsafe?.user?.username || 'User';
+        
+        function isAuthorized() {
+            return userId === MAIN_ADMIN_ID || userId === DEVELOPER_ID;
+        }
+        
+        if (!isAuthorized()) {
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('unauthorizedMsg').style.display = 'block';
+            document.getElementById('userIdDisplay').innerHTML = `Your User ID: <code>${userId}</code>`;
+            throw new Error('Unauthorized');
+        }
+        
+        document.getElementById('adminId').innerHTML = `✅ Authorized: ID ${userId}`;
+        
         const mockData = {
             total_volume: 18420.50,
             total_etb: 110000,
@@ -261,14 +314,14 @@
             total_active: 5,
             groups_count: 12,
             admins_list: [
-                {name: '@Agegenewu0102', deals: 63, usd: 656.50, etb: 93000},
-                {name: '@Mr_JOKER_UP', deals: 40, usd: 471.30, etb: 4613},
-                {name: '@Joker_Bv', deals: 34, usd: 83.04, etb: 4250},
-                {name: '@Amanu279', deals: 14, usd: 57.20, etb: 11750},
-                {name: '@Blackaauu', deals: 15, usd: 124.00, etb: 0},
-                {name: '@Kefafi3', deals: 5, usd: 28.80, etb: 0},
-                {name: '@It_is_me_Viva', deals: 14, usd: 9.90, etb: 4550},
-                {name: '@Liyu_7557', deals: 6, usd: 31.16, etb: 1860}
+                {name: '@agegenewu0102', deals: 63, usd: 656.50, etb: 93000},
+                {name: '@mr_joker_up', deals: 40, usd: 471.30, etb: 4613},
+                {name: '@joker_bv', deals: 34, usd: 83.04, etb: 4250},
+                {name: '@amanu279', deals: 14, usd: 57.20, etb: 11750},
+                {name: '@blackaauu', deals: 15, usd: 124.00, etb: 0},
+                {name: '@kefafi3', deals: 5, usd: 28.80, etb: 0},
+                {name: '@it_is_me_viva', deals: 14, usd: 9.90, etb: 4550},
+                {name: '@liyu_7557', deals: 6, usd: 31.16, etb: 1860}
             ],
             top_users: [
                 {name: '@BigTrader', volume: 3450.75},
@@ -278,18 +331,29 @@
                 {name: '@BirrMaster', volume: 1650.30}
             ],
             recent_deals: [
-                {id: 'DVA1234', status: 'completed', amount: 500, currency: 'USD', buyer: '@john', seller: '@jane'},
-                {id: 'DVA1235', status: 'active', amount: 1000, currency: 'ETB', buyer: '@ali', seller: '@bob'},
-                {id: 'DVA1236', status: 'refunded', amount: 50, currency: 'USD', buyer: '@sam', seller: '@tom'},
-                {id: 'DVA1237', status: 'completed', amount: 2000, currency: 'ETB', buyer: '@lea', seller: '@kim'},
-                {id: 'DVA1238', status: 'cancelled', amount: 75, currency: 'USD', buyer: '@ray', seller: '@jay'}
+                {id: 'DVA1234', status: 'completed', amount: 500, currency: 'USD'},
+                {id: 'DVA1235', status: 'active', amount: 1000, currency: 'ETB'},
+                {id: 'DVA1236', status: 'refunded', amount: 50, currency: 'USD'},
+                {id: 'DVA1237', status: 'completed', amount: 2000, currency: 'ETB'},
+                {id: 'DVA1238', status: 'cancelled', amount: 75, currency: 'USD'}
             ]
         };
         
         async function fetchData() {
             try {
-                // Try to fetch from real API
-                const response = await fetch(API_URL);
+                const response = await fetch(API_URL, {
+                    headers: {
+                        'Authorization': `Bearer ${userId}`
+                    }
+                });
+                
+                if (response.status === 401) {
+                    document.getElementById('dashboardContent').style.display = 'none';
+                    document.getElementById('unauthorizedMsg').style.display = 'block';
+                    document.getElementById('userIdDisplay').innerHTML = `Your User ID: <code>${userId}</code><br>Not authorized!`;
+                    return;
+                }
+                
                 const data = await response.json();
                 updateDashboard(data);
             } catch (error) {
@@ -299,22 +363,16 @@
         }
         
         function updateDashboard(data) {
-            // Update main stats
             document.getElementById('totalVolume').textContent = '$' + (data.total_volume || 0).toFixed(2);
             document.getElementById('etbVolume').textContent = (data.total_etb || 0).toLocaleString() + ' ETB';
             document.getElementById('usdVolume').textContent = '$' + (data.total_usd || 0).toFixed(2);
             document.getElementById('totalDeals').textContent = data.total_deals || 0;
-            
-            // Update status counts
             document.getElementById('completedDeals').textContent = data.total_completed || 0;
             document.getElementById('refundedDeals').textContent = data.total_refunded || 0;
             document.getElementById('cancelledDeals').textContent = data.total_cancelled || 0;
             document.getElementById('activeDeals').textContent = data.total_active || 0;
-            
-            // Update groups count
             document.getElementById('groupsCount').textContent = `📊 Tracking ${data.groups_count || 0} groups`;
             
-            // Update admin leaderboard
             let adminHtml = '';
             if (data.admins_list && data.admins_list.length > 0) {
                 data.admins_list.forEach(admin => {
@@ -330,7 +388,6 @@
             }
             document.getElementById('adminList').innerHTML = adminHtml;
             
-            // Update top users
             let userHtml = '';
             if (data.top_users && data.top_users.length > 0) {
                 data.top_users.slice(0, 10).forEach(user => {
@@ -346,7 +403,6 @@
             }
             document.getElementById('userList').innerHTML = userHtml;
             
-            // Update recent deals
             let recentHtml = '';
             if (data.recent_deals && data.recent_deals.length > 0) {
                 data.recent_deals.slice(0, 10).forEach(deal => {
@@ -367,21 +423,17 @@
             }
             document.getElementById('recentDealsList').innerHTML = recentHtml;
             
-            // Update timestamps
             const now = new Date();
             document.getElementById('timestamp').textContent = 'Last Updated: ' + now.toLocaleString();
             document.getElementById('updateTime').textContent = 'Updated: ' + now.toLocaleTimeString();
             document.getElementById('liveIndicator').textContent = '🔴 LIVE ' + now.toLocaleTimeString();
         }
         
-        // Initialize with mock data immediately
-        updateDashboard(mockData);
-        
-        // Then try to fetch real data
-        setTimeout(fetchData, 1000);
-        
-        // Auto-refresh every 30 seconds
-        setInterval(fetchData, 30000);
+        if (isAuthorized()) {
+            updateDashboard(mockData);
+            setTimeout(fetchData, 1000);
+            setInterval(fetchData, 30000);
+        }
     </script>
 </body>
 </html>
