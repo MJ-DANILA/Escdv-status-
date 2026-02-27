@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DVA ESCROW · COMPLETE TRADING SYSTEM</title>
+    <title>DVA ESCROW · MULTI-GROUP STATUS SYSTEM</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -30,10 +30,10 @@
 
         /* Main Container */
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 2.5fr;
+            grid-template-columns: 1fr 3fr;
             gap: 1.5rem;
         }
 
@@ -99,36 +99,55 @@
             gap: 0.5rem;
         }
 
-        /* Quick Actions Bar */
-        .quick-actions {
+        /* Group Navigation Buttons */
+        .group-nav {
             display: flex;
-            gap: 0.8rem;
             flex-wrap: wrap;
+            gap: 0.8rem;
             margin-bottom: 2rem;
+            padding: 0.5rem;
+            background: #f3e8ff;
+            border-radius: 60px;
+            justify-content: center;
         }
 
-        .quick-btn {
-            background: white;
-            padding: 0.7rem 1.3rem;
+        .group-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
             border-radius: 40px;
-            border: 1px solid #e0d0ff;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            background: white;
+            color: #4a2b63;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        .quick-btn:hover {
-            background: linear-gradient(145deg, #f0e9ff, #e9d5ff);
-            transform: translateY(-2px);
-            border-color: #8b5cf6;
+        .group-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px #8b5cf6;
         }
 
-        .quick-btn i {
-            color: #8b5cf6;
+        .group-btn.active {
+            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+            color: white;
+        }
+
+        .group-btn i {
+            font-size: 1rem;
+        }
+
+        .group-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
         }
 
         /* Status Cards Grid */
@@ -144,6 +163,7 @@
             border-radius: 30px;
             padding: 1.5rem;
             transition: transform 0.3s;
+            border-left: 5px solid #8b5cf6;
         }
 
         .stat-card:hover {
@@ -167,69 +187,127 @@
             color: #2b1b3a;
         }
 
-        /* Social Media Bar */
-        .social-bar {
+        /* Group Status Section */
+        .group-status-section {
+            margin: 2rem 0;
+        }
+
+        .group-status-header {
             display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s;
+        .group-status-header h3 {
+            color: #4a2b63;
+            font-size: 1.3rem;
         }
 
-        .social-btn:hover {
-            transform: translateY(-5px) scale(1.1);
-        }
-
-        .btn-telegram { background: #0088cc; }
-        .btn-tiktok { background: #000000; }
-        .btn-facebook { background: #1877f2; }
-        .btn-whatsapp { background: #25d366; }
-        .btn-x { background: #000000; }
-        .btn-instagram { background: #e4405f; }
-        .btn-discord { background: #5865F2; }
-        .btn-youtube { background: #ff0000; }
-        .btn-github { background: #333; }
-
-        /* Main Action Button - DEAL FORM */
-        .main-action-btn {
-            width: 100%;
-            padding: 1.5rem;
+        .group-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 20px;
             background: linear-gradient(145deg, #8b5cf6, #6d28d9);
             color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Group Stats Grid */
+        .group-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
-            margin: 2rem 0;
-            animation: pulse 2s infinite;
+            margin-bottom: 2rem;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+        .group-stat-box {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid #e0d0ff;
         }
 
-        .main-action-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 40px -15px #8b5cf6;
+        .group-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+
+        .group-stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        /* Admin List for Group */
+        .group-admins {
+            background: #f3e8ff;
+            border-radius: 30px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .admin-chip {
+            display: inline-block;
+            background: white;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            margin: 0.3rem;
+            font-size: 0.85rem;
+            border: 1px solid #8b5cf6;
+        }
+
+        .admin-chip i {
+            color: #ffd700;
+            margin-right: 0.3rem;
+        }
+
+        /* Group Deals List */
+        .group-deals {
+            margin-top: 2rem;
+        }
+
+        .deal-card {
+            background: white;
+            border-radius: 30px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e0d0ff;
+            border-left: 5px solid;
+        }
+
+        .deal-card.group1 { border-left-color: #8b5cf6; }
+        .deal-card.group2 { border-left-color: #10b981; }
+        .deal-card.group3 { border-left-color: #f59e0b; }
+        .deal-card.group4 { border-left-color: #ef4444; }
+        .deal-card.group5 { border-left-color: #ec4899; }
+
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .deal-group-badge {
+            background: #f3e8ff;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .deal-status {
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         /* Modal for Deal Form */
@@ -259,13 +337,6 @@
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            position: relative;
-            animation: modalSlide 0.3s ease;
-        }
-
-        @keyframes modalSlide {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .close-modal {
@@ -279,266 +350,56 @@
             color: #999;
         }
 
-        .close-modal:hover {
-            color: #ef4444;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #4a2b63;
-            font-size: 0.95rem;
-        }
-
-        .form-group label i {
-            margin-right: 0.5rem;
-            color: #8b5cf6;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 1rem 1.2rem;
-            border: 2px solid #e0d0ff;
-            border-radius: 30px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        .role-selector {
+        /* Quick Actions */
+        .quick-actions {
             display: flex;
-            gap: 1rem;
-            margin: 1.5rem 0;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
         }
 
-        .role-option {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid #e0d0ff;
-            border-radius: 30px;
-            text-align: center;
+        .quick-btn {
+            background: white;
+            padding: 0.7rem 1.3rem;
+            border-radius: 40px;
+            border: 1px solid #e0d0ff;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .role-option.selected {
+        .quick-btn:hover {
+            background: #f3e8ff;
+            transform: translateY(-2px);
+        }
+
+        /* Main Action Button */
+        .main-action-btn {
+            width: 100%;
+            padding: 1.5rem;
             background: linear-gradient(145deg, #8b5cf6, #6d28d9);
             color: white;
-            border-color: #8b5cf6;
-        }
-
-        .role-option i {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* Payment Address Box */
-        .payment-box {
-            background: linear-gradient(145deg, #1e1b4b, #312e81);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 30px;
-            margin: 1.5rem 0;
-        }
-
-        .payment-address {
-            font-family: monospace;
-            background: rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 20px;
-            margin: 1rem 0;
-            word-break: break-all;
-        }
-
-        /* Photo Upload */
-        .photo-upload {
-            border: 3px dashed #8b5cf6;
-            border-radius: 30px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            margin: 1.5rem 0;
-        }
-
-        .photo-upload:hover {
-            background: #f3e8ff;
-        }
-
-        .photo-upload i {
-            font-size: 3rem;
-            color: #8b5cf6;
-        }
-
-        .preview-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin-top: 1rem;
-        }
-
-        /* Submit Button */
-        .submit-form-btn {
-            width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(145deg, #10b981, #059669);
-            color: white;
             border: none;
             border-radius: 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 1rem;
-            margin-top: 2rem;
+            margin: 2rem 0;
+            animation: pulse 2s infinite;
         }
 
-        /* Deals Grid */
-        .deals-grid {
-            display: grid;
-            gap: 1.2rem;
-            max-height: 600px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .deal-card {
-            background: white;
-            border-radius: 30px;
-            padding: 1.5rem;
-            border: 1px solid #e0d0ff;
-            transition: all 0.3s;
-        }
-
-        .deal-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 10px 30px -10px #8b5cf6;
-        }
-
-        .deal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .deal-id {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #4a2b63;
-        }
-
-        .deal-status {
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status-pending { background: #fcd34d; color: #000; }
-        .status-waiting { background: #93c5fd; color: #000; }
-        .status-active { background: #4ade80; color: #000; }
-        .status-completed { background: #8b5cf6; color: white; }
-        .status-refunded { background: #f87171; color: white; }
-
-        .deal-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem;
-            margin: 1rem 0;
-            font-size: 0.95rem;
-        }
-
-        .proof-image-small {
-            width: 100%;
-            max-height: 150px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin: 0.5rem 0;
-        }
-
-        .deal-actions {
-            display: flex;
-            gap: 0.8rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            min-width: 100px;
-        }
-
-        .btn-approve { background: #8b5cf6; color: white; }
-        .btn-reject { background: #ef4444; color: white; }
-        .btn-release { background: #4ade80; color: #000; }
-        .btn-refund { background: #f87171; color: white; }
-        .btn-complete { background: #10b981; color: white; }
-        .btn-payment { background: #f59e0b; color: #000; }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            background: linear-gradient(145deg, #1e1b4b, #312e81);
-            border-radius: 30px;
-            padding: 1.5rem;
-            color: white;
-            margin-top: 2rem;
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .admin-stat {
-            text-align: center;
-        }
-
-        .admin-stat-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffd700;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
         /* Notification */
@@ -561,39 +422,8 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Command Grid */
-        .command-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0.8rem;
-            margin: 1rem 0;
-        }
-
-        .cmd-btn {
-            background: white;
-            padding: 0.8rem;
-            border-radius: 30px;
-            border: 1px solid #e0d0ff;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .cmd-btn:hover {
-            background: #f3e8ff;
-            transform: translateX(3px);
-        }
-
-        .cmd-btn i {
-            color: #8b5cf6;
-        }
-
         /* Responsive */
-        @media (max-width: 1000px) {
+        @media (max-width: 1200px) {
             .container {
                 grid-template-columns: 1fr;
             }
@@ -610,271 +440,408 @@
                 </div>
                 <div class="title">
                     <h1>DVA ESCROW</h1>
-                    <p>Secure Trading Platform</p>
+                    <p>Multi-Group System</p>
                 </div>
                 <div class="live-badge">
-                    <i class="fas fa-circle" style="color: #4ade80;"></i> LIVE
+                    <i class="fas fa-circle" style="color: #4ade80;"></i> 100 GROUPS
                 </div>
             </div>
 
-            <!-- Quick Action Buttons -->
+            <!-- Quick Actions -->
             <div class="quick-actions">
-                <button class="quick-btn" onclick="window.open('https://t.me/MR_JOKER_UP', '_blank')"><i class="fab fa-telegram"></i> Contact Dev</button>
-                <button class="quick-btn" onclick="window.open('https://t.me/Escdv', '_blank')"><i class="fas fa-users"></i> Group</button>
-                <button class="quick-btn" onclick="window.open('https://t.me/EscrowOrdva_proof', '_blank')"><i class="fas fa-newspaper"></i> Channel</button>
+                <button class="quick-btn" onclick="window.open('https://t.me/MR_JOKER_UP', '_blank')"><i class="fab fa-telegram"></i> Dev</button>
                 <button class="quick-btn" onclick="location.reload()"><i class="fas fa-sync-alt"></i> Refresh</button>
-                <button class="quick-btn" onclick="window.open('https://github.com/MJ-Danila', '_blank')"><i class="fab fa-github"></i> GitHub</button>
             </div>
 
-            <!-- Status Cards -->
-            <div class="status-grid">
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-clock"></i> PENDING ESCROW</div>
-                    <div class="stat-number">£12,800</div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem;">
-                        <span>Dva amount</span>
-                        <span style="color: #10b981;">+2.1%</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-check-circle"></i> COMPLETED DEALS</div>
-                    <div class="stat-number">193</div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem;">
-                        <span>this quarter</span>
-                        <span style="color: #8b5cf6;">9 new</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-scale-balanced"></i> IN DISPUTE</div>
-                    <div class="stat-number">5</div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem;">
-                        <span>under review</span>
-                        <span>£1,061</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="fas fa-users"></i> ACTIVE PARTIES</div>
-                    <div class="stat-number">9</div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem;">
-                        <span>admins online</span>
-                        <span>1,247</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MAIN ACTION BUTTON - DEAL FORM -->
+            <!-- MAIN ACTION BUTTON -->
             <button class="main-action-btn" onclick="openDealForm()">
                 <i class="fas fa-file-alt"></i>
-                CLICK HERE TO CREATE NEW DEAL
+                CREATE NEW DEAL
                 <i class="fas fa-arrow-right"></i>
             </button>
 
-            <!-- Social Media Bar -->
-            <div class="social-bar">
-                <button class="social-btn btn-telegram" onclick="window.open('https://t.me/Escdv', '_blank')"><i class="fab fa-telegram-plane"></i></button>
-                <button class="social-btn btn-tiktok" onclick="window.open('https://tiktok.com/@dvabot', '_blank')"><i class="fab fa-tiktok"></i></button>
-                <button class="social-btn btn-facebook" onclick="window.open('https://facebook.com/dvabot', '_blank')"><i class="fab fa-facebook"></i></button>
-                <button class="social-btn btn-whatsapp" onclick="window.open('https://chat.whatsapp.com/dvabot', '_blank')"><i class="fab fa-whatsapp"></i></button>
-                <button class="social-btn btn-x" onclick="window.open('https://twitter.com/dvabot', '_blank')"><i class="fab fa-x-twitter"></i></button>
-                <button class="social-btn btn-instagram" onclick="window.open('https://instagram.com/dvabot', '_blank')"><i class="fab fa-instagram"></i></button>
-                <button class="social-btn btn-discord" onclick="window.open('https://discord.gg/dvabot', '_blank')"><i class="fab fa-discord"></i></button>
-                <button class="social-btn btn-youtube" onclick="window.open('https://youtube.com/@dvabot', '_blank')"><i class="fab fa-youtube"></i></button>
-                <button class="social-btn btn-github" onclick="window.open('https://github.com/MJ-Danila', '_blank')"><i class="fab fa-github"></i></button>
+            <!-- GLOBAL STATS -->
+            <div class="status-grid">
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-globe"></i> TOTAL GROUPS</div>
+                    <div class="stat-number">100</div>
+                    <div style="color: #8b5cf6;">Active Groups</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-check-circle"></i> TOTAL DEALS</div>
+                    <div class="stat-number">1,847</div>
+                    <div style="color: #10b981;">+127 this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-users"></i> TOTAL ADMINS</div>
+                    <div class="stat-number">47</div>
+                    <div>Across all groups</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="fas fa-chart-line"></i> VOLUME</div>
+                    <div class="stat-number">$12.4K</div>
+                    <div>+ 850K ETB</div>
+                </div>
             </div>
 
-            <!-- Quick Commands -->
-            <h3 style="color: #4a2b63; margin: 1.5rem 0 1rem;"><i class="fas fa-terminal"></i> QUICK COMMANDS</h3>
-            <div class="command-grid">
-                <button class="cmd-btn" onclick="copyCommand('/form')"><i class="fas fa-file-alt"></i> /form - Report Deal</button>
-                <button class="cmd-btn" onclick="copyCommand('/help')"><i class="fas fa-question-circle"></i> /help - Commands</button>
-                <button class="cmd-btn" onclick="copyCommand('/me')"><i class="fas fa-user"></i> /me - My Stats</button>
-                <button class="cmd-btn" onclick="copyCommand('/top')"><i class="fas fa-trophy"></i> /top - Leaderboard</button>
-                <button class="cmd-btn" onclick="copyCommand('/status')"><i class="fas fa-chart-bar"></i> /status - Bot Stats</button>
-                <button class="cmd-btn" onclick="copyCommand('/balance')"><i class="fas fa-wallet"></i> /balance - Check</button>
-                <button class="cmd-btn" onclick="copyCommand('/release')"><i class="fas fa-hand-holding-usd"></i> /release - Release</button>
-                <button class="cmd-btn" onclick="copyCommand('/refundrequest')"><i class="fas fa-undo-alt"></i> /refundrequest</button>
-                <button class="cmd-btn" onclick="copyCommand('/currency')"><i class="fas fa-coins"></i> /currency - Rates</button>
-                <button class="cmd-btn" onclick="copyCommand('/filter')"><i class="fas fa-filter"></i> /filter - Admin</button>
+            <!-- GROUP NAVIGATION BUTTONS (100 GROUPS - SHOWING TOP 20) -->
+            <div class="group-nav">
+                <button class="group-btn active" onclick="switchGroup('all')">
+                    <i class="fas fa-globe"></i> ALL GROUPS
+                </button>
+                <button class="group-btn" onclick="switchGroup('group1')">
+                    <i class="fas fa-users"></i> DVA MAIN
+                    <span class="group-badge">193</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group2')">
+                    <i class="fas fa-users"></i> TRADING HUB
+                    <span class="group-badge">156</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group3')">
+                    <i class="fas fa-users"></i> ESCROW 1
+                    <span class="group-badge">142</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group4')">
+                    <i class="fas fa-users"></i> DVA PRO
+                    <span class="group-badge">98</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group5')">
+                    <i class="fas fa-users"></i> TRADERS
+                    <span class="group-badge">87</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group6')">
+                    <i class="fas fa-users"></i> GROUP 6
+                    <span class="group-badge">76</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group7')">
+                    <i class="fas fa-users"></i> GROUP 7
+                    <span class="group-badge">65</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group8')">
+                    <i class="fas fa-users"></i> GROUP 8
+                    <span class="group-badge">54</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group9')">
+                    <i class="fas fa-users"></i> GROUP 9
+                    <span class="group-badge">43</span>
+                </button>
+                <button class="group-btn" onclick="switchGroup('group10')">
+                    <i class="fas fa-users"></i> GROUP 10
+                    <span class="group-badge">32</span>
+                </button>
             </div>
 
-            <!-- Admin Panel -->
-            <div class="admin-panel">
-                <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                    <i class="fas fa-crown" style="color: #ffd700;"></i> ADMIN PANEL
-                </h3>
-                <div><i class="fas fa-user-shield"></i> MAIN ADMIN: @MR_JOKER_UP</div>
-                <div class="admin-stats">
-                    <div class="admin-stat">
-                        <div class="admin-stat-value">9</div>
-                        <div>Admins</div>
+            <!-- QUICK STATS SUMMARY -->
+            <div style="background: #f3e8ff; border-radius: 30px; padding: 1.5rem; margin-top: 1rem;">
+                <h4 style="color: #4a2b63; margin-bottom: 1rem;">📊 QUICK SUMMARY</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div>
+                        <div style="font-weight: 600;">Top Group:</div>
+                        <div>DVA MAIN (193 deals)</div>
                     </div>
-                    <div class="admin-stat">
-                        <div class="admin-stat-value">$1.4K</div>
-                        <div>USD</div>
+                    <div>
+                        <div style="font-weight: 600;">Most Active:</div>
+                        <div>@Agegnewu0102</div>
                     </div>
-                    <div class="admin-stat">
-                        <div class="admin-stat-value">120K</div>
-                        <div>ETB</div>
+                    <div>
+                        <div style="font-weight: 600;">Success Rate:</div>
+                        <div>97.3%</div>
                     </div>
-                    <div class="admin-stat">
-                        <div class="admin-stat-value">v20.0</div>
-                        <div>Online</div>
+                    <div>
+                        <div style="font-weight: 600;">Live Now:</div>
+                        <div>23 deals active</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL - ACTIVE DEALS -->
+        <!-- RIGHT PANEL - GROUP SPECIFIC CONTENT -->
         <div class="right-panel">
             <div class="header">
                 <div class="logo" style="background: linear-gradient(145deg, #8b5cf6, #6d28d9);">
-                    <i class="fas fa-list"></i>
+                    <i class="fas fa-layer-group"></i>
                 </div>
                 <div class="title">
-                    <h1>ACTIVE DEALS</h1>
-                    <p>Real-time updates</p>
+                    <h1 id="currentGroupTitle">ALL GROUPS DASHBOARD</h1>
+                    <p id="currentGroupDesc">Showing stats for all 100 groups</p>
                 </div>
-                <div class="live-badge">
-                    <i class="fas fa-bolt"></i> 5 ACTIVE
+                <div class="live-badge" id="groupLiveBadge">
+                    <i class="fas fa-bolt"></i> 100 GROUPS
                 </div>
             </div>
 
-            <!-- DEALS LIST -->
-            <div class="deals-grid" id="dealsList">
-                <!-- DEAL 1 - PENDING ADMIN APPROVAL -->
-                <div class="deal-card" id="deal1">
-                    <div class="deal-header">
-                        <span class="deal-id">#DVA1251</span>
-                        <span class="deal-status status-pending">PENDING ADMIN</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: @MR_JOKER_UP</span>
+            <!-- GROUP SPECIFIC STATS (Changes based on selected group) -->
+            <div class="group-status-section" id="groupStats">
+                <!-- Group 1 Stats -->
+                <div class="group-stats-group" id="stats-all" style="display: block;">
+                    <div class="group-status-header">
+                        <div class="group-icon"><i class="fas fa-globe"></i></div>
+                        <h3>ALL GROUPS COMBINED</h3>
                     </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> @john_doe</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> @joker_bv</div>
-                        <div><i class="fas fa-dollar-sign"></i> <strong>Amount:</strong> $500 USD</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> iPhone 13</div>
-                    </div>
-                    
-                    <!-- PAYMENT PROOF -->
-                    <div style="background: #f3e8ff; padding: 1rem; border-radius: 20px; margin: 1rem 0;">
-                        <strong><i class="fas fa-image"></i> PAYMENT PROOF:</strong>
-                        <img src="https://via.placeholder.com/300x150/8b5cf6/ffffff?text=Payment+Screenshot" class="proof-image-small">
-                    </div>
-
-                    <!-- ADMIN ACTIONS -->
-                    <div class="deal-actions">
-                        <button class="action-btn btn-approve" onclick="approvePayment('deal1')">
-                            <i class="fas fa-check"></i> APPROVE PAYMENT
-                        </button>
-                        <button class="action-btn btn-reject" onclick="rejectPayment('deal1')">
-                            <i class="fas fa-times"></i> REJECT PAYMENT
-                        </button>
-                    </div>
-                </div>
-
-                <!-- DEAL 2 - ACTIVE (AWAITING SELLER RELEASE) -->
-                <div class="deal-card" id="deal2">
-                    <div class="deal-header">
-                        <span class="deal-id">#DVA1248</span>
-                        <span class="deal-status status-active">ACTIVE - AWAITING SELLER</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: @Agegnewu0102</span>
-                    </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> @alice</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> @blackxauu</div>
-                        <div><i class="fas fa-coins"></i> <strong>Amount:</strong> 40 ETB</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> Gift Card</div>
-                    </div>
-
-                    <!-- SELLER PAYMENT ADDRESS -->
-                    <div style="background: #1e1b4b; color: white; padding: 1rem; border-radius: 20px; margin: 1rem 0;">
-                        <strong><i class="fas fa-building-columns"></i> SELLER'S PAYMENT ADDRESS:</strong>
-                        <div style="font-family: monospace; margin-top: 0.5rem;">
-                            Bank: Commercial Bank of Ethiopia<br>
-                            Account: 100023456789<br>
-                            Name: Black Xauu
+                    <div class="group-stats-grid">
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">100</div>
+                            <div class="group-stat-label">Total Groups</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">1,847</div>
+                            <div class="group-stat-label">Total Deals</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">47</div>
+                            <div class="group-stat-label">Total Admins</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">$12.4K</div>
+                            <div class="group-stat-label">USD Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">850K</div>
+                            <div class="group-stat-label">ETB Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">97.3%</div>
+                            <div class="group-stat-label">Success Rate</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">23</div>
+                            <div class="group-stat-label">Active Now</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">156</div>
+                            <div class="group-stat-label">This Week</div>
                         </div>
                     </div>
 
-                    <!-- SELLER ACTION -->
-                    <div class="deal-actions">
-                        <button class="action-btn btn-release" onclick="releaseFunds('deal2')">
-                            <i class="fas fa-hand-holding-usd"></i> RELEASE FUNDS
-                        </button>
+                    <!-- ALL ADMINS LIST -->
+                    <div class="group-admins">
+                        <h4 style="margin-bottom: 1rem;"><i class="fas fa-crown"></i> ALL ADMINS (47)</h4>
+                        <div>
+                            <span class="admin-chip"><i class="fas fa-crown"></i> @MR_JOKER_UP (Main)</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Agegnewu0102</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Joker_Bv</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @blackxauu</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Amanu279</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @It_is_me_Viva</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Liyu_7557</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Kefafi3</span>
+                            <span class="admin-chip"><i class="fas fa-shield"></i> @Blackxauu</span>
+                            <span class="admin-chip">+38 more...</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- DEAL 3 - ACTIVE (AWAITING BUYER REFUND) -->
-                <div class="deal-card" id="deal3">
-                    <div class="deal-header">
-                        <span class="deal-id">#DVA1245</span>
-                        <span class="deal-status status-active">ACTIVE - AWAITING BUYER</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: @Joker_Bv</span>
+                <!-- Group 1 - DVA MAIN -->
+                <div class="group-stats-group" id="stats-group1" style="display: none;">
+                    <div class="group-status-header">
+                        <div class="group-icon"><i class="fas fa-flag"></i></div>
+                        <h3>DVA MAIN GROUP #1</h3>
                     </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> @agegnewu0102</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> @amanu279</div>
-                        <div><i class="fas fa-euro-sign"></i> <strong>Amount:</strong> €50 EUR</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> Phone</div>
+                    <div class="group-stats-grid">
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">193</div>
+                            <div class="group-stat-label">Total Deals</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">$1,464</div>
+                            <div class="group-stat-label">USD Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">120K</div>
+                            <div class="group-stat-label">ETB Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">9</div>
+                            <div class="group-stat-label">Admins</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">5</div>
+                            <div class="group-stat-label">Active</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">98%</div>
+                            <div class="group-stat-label">Success</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">47</div>
+                            <div class="group-stat-label">ETB Deals</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">146</div>
+                            <div class="group-stat-label">USD Deals</div>
+                        </div>
                     </div>
 
-                    <!-- BUYER ACTION -->
-                    <div class="deal-actions">
-                        <button class="action-btn btn-refund" onclick="requestRefund('deal3')">
-                            <i class="fas fa-undo-alt"></i> REQUEST REFUND
-                        </button>
+                    <!-- GROUP ADMINS -->
+                    <div class="group-admins">
+                        <h4><i class="fas fa-users-cog"></i> GROUP ADMINS</h4>
+                        <div>
+                            <span class="admin-chip"><i class="fas fa-crown"></i> @MR_JOKER_UP</span>
+                            <span class="admin-chip">@Agegnewu0102</span>
+                            <span class="admin-chip">@Joker_Bv</span>
+                            <span class="admin-chip">@blackxauu</span>
+                            <span class="admin-chip">@Amanu279</span>
+                            <span class="admin-chip">@It_is_me_Viva</span>
+                            <span class="admin-chip">@Liyu_7557</span>
+                            <span class="admin-chip">@Kefafi3</span>
+                            <span class="admin-chip">@Blackxauu</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- DEAL 4 - COMPLETED (AWAITING SELLER PAYMENT ADDRESS) -->
-                <div class="deal-card" id="deal4">
-                    <div class="deal-header">
-                        <span class="deal-id">#DVA1242</span>
-                        <span class="deal-status status-completed">COMPLETED - AWAITING PAYMENT ADDRESS</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: @It_is_me_Viva</span>
+                <!-- Group 2 - TRADING HUB -->
+                <div class="group-stats-group" id="stats-group2" style="display: none;">
+                    <div class="group-status-header">
+                        <div class="group-icon"><i class="fas fa-store"></i></div>
+                        <h3>TRADING HUB #2</h3>
                     </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> @it_is_me_viva</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> @liyu_7557</div>
-                        <div><i class="fas fa-coins"></i> <strong>Amount:</strong> 1,040 ETB</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> Service</div>
+                    <div class="group-stats-grid">
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">156</div>
+                            <div class="group-stat-label">Total Deals</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">$2,847</div>
+                            <div class="group-stat-label">USD Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">234K</div>
+                            <div class="group-stat-label">ETB Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">6</div>
+                            <div class="group-stat-label">Admins</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">8</div>
+                            <div class="group-stat-label">Active</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">96%</div>
+                            <div class="group-stat-label">Success</div>
+                        </div>
                     </div>
-
-                    <!-- SELLER PAYMENT ADDRESS FORM -->
-                    <div style="background: #f3e8ff; padding: 1rem; border-radius: 20px; margin: 1rem 0;">
-                        <strong><i class="fas fa-building-columns"></i> ENTER PAYMENT ADDRESS:</strong>
-                        <input type="text" class="form-control" placeholder="Bank Name" style="margin-top: 0.5rem;" id="bank4">
-                        <input type="text" class="form-control" placeholder="Account Number" style="margin-top: 0.5rem;" id="account4">
-                        <input type="text" class="form-control" placeholder="Account Name" style="margin-top: 0.5rem;" id="name4">
-                    </div>
-
-                    <div class="deal-actions">
-                        <button class="action-btn btn-payment" onclick="submitPaymentAddress('deal4')">
-                            <i class="fas fa-paper-plane"></i> SUBMIT ADDRESS TO BOT
-                        </button>
+                    <div class="group-admins">
+                        <h4>👥 GROUP ADMINS</h4>
+                        <div>
+                            <span class="admin-chip">@Admin1</span>
+                            <span class="admin-chip">@Admin2</span>
+                            <span class="admin-chip">@Admin3</span>
+                            <span class="admin-chip">@Admin4</span>
+                            <span class="admin-chip">@Admin5</span>
+                            <span class="admin-chip">@Admin6</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- DEAL 5 - COMPLETED (PAYMENT SENT TO SELLER) -->
-                <div class="deal-card" id="deal5">
+                <!-- Group 3 - ESCROW 1 -->
+                <div class="group-stats-group" id="stats-group3" style="display: none;">
+                    <div class="group-status-header">
+                        <div class="group-icon"><i class="fas fa-shield"></i></div>
+                        <h3>ESCROW GROUP #3</h3>
+                    </div>
+                    <div class="group-stats-grid">
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">142</div>
+                            <div class="group-stat-label">Total Deals</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">$1,956</div>
+                            <div class="group-stat-label">USD Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">189K</div>
+                            <div class="group-stat-label">ETB Volume</div>
+                        </div>
+                        <div class="group-stat-box">
+                            <div class="group-stat-value">5</div>
+                            <div class="group-stat-label">Admins</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more groups up to 100... -->
+            </div>
+
+            <!-- RECENT DEALS FOR SELECTED GROUP -->
+            <h3 style="color: #4a2b63; margin: 2rem 0 1rem;">
+                <i class="fas fa-history"></i> <span id="recentDealsTitle">RECENT DEALS (ALL GROUPS)</span>
+            </h3>
+
+            <div class="group-deals" id="groupDeals">
+                <!-- Deals from Group 1 -->
+                <div class="deal-card group1">
                     <div class="deal-header">
-                        <span class="deal-id">#DVA1240</span>
-                        <span class="deal-status status-completed">COMPLETED - PAYMENT SENT</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: @Kefafi3</span>
+                        <span class="deal-id">#DVA1251</span>
+                        <span class="deal-group-badge"><i class="fas fa-users"></i> DVA MAIN</span>
+                        <span class="deal-status status-pending">PENDING</span>
                     </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> @kefafi3</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> @joker_bv</div>
-                        <div><i class="fas fa-dollar-sign"></i> <strong>Amount:</strong> $21 USD</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> Digital Code</div>
+                    <div><i class="fas fa-user"></i> @john_doe → @joker_bv</div>
+                    <div><i class="fas fa-dollar-sign"></i> $500 USD - iPhone 13</div>
+                </div>
+
+                <div class="deal-card group1">
+                    <div class="deal-header">
+                        <span class="deal-id">#DVA1248</span>
+                        <span class="deal-group-badge"><i class="fas fa-users"></i> DVA MAIN</span>
+                        <span class="deal-status status-active">ACTIVE</span>
                     </div>
-                    
-                    <!-- PAYMENT CONFIRMATION -->
-                    <div style="background: #10b98120; padding: 1rem; border-radius: 20px; margin: 1rem 0; text-align: center;">
-                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 2rem;"></i>
-                        <div style="font-weight: 600;">PAYMENT SENT TO SELLER</div>
-                        <div style="font-size: 0.8rem;">Transaction ID: TXN784512</div>
+                    <div><i class="fas fa-user"></i> @alice → @blackxauu</div>
+                    <div><i class="fas fa-coins"></i> 40 ETB - Gift Card</div>
+                </div>
+
+                <!-- Deals from Group 2 -->
+                <div class="deal-card group2">
+                    <div class="deal-header">
+                        <span class="deal-id">#TRD234</span>
+                        <span class="deal-group-badge"><i class="fas fa-store"></i> TRADING HUB</span>
+                        <span class="deal-status status-active">ACTIVE</span>
                     </div>
+                    <div><i class="fas fa-user"></i> @trader1 → @trader2</div>
+                    <div><i class="fas fa-euro-sign"></i> €200 EUR - Service</div>
+                </div>
+
+                <div class="deal-card group2">
+                    <div class="deal-header">
+                        <span class="deal-id">#TRD235</span>
+                        <span class="deal-group-badge"><i class="fas fa-store"></i> TRADING HUB</span>
+                        <span class="deal-status status-completed">COMPLETED</span>
+                    </div>
+                    <div><i class="fas fa-user"></i> @seller1 → @buyer1</div>
+                    <div><i class="fas fa-pound-sign"></i> £150 GBP - Electronics</div>
+                </div>
+
+                <!-- Deals from Group 3 -->
+                <div class="deal-card group3">
+                    <div class="deal-header">
+                        <span class="deal-id">#ESC789</span>
+                        <span class="deal-group-badge"><i class="fas fa-shield"></i> ESCROW 1</span>
+                        <span class="deal-status status-pending">PENDING</span>
+                    </div>
+                    <div><i class="fas fa-user"></i> @buyer2 → @seller2</div>
+                    <div><i class="fas fa-dollar-sign"></i> $1,200 USD - Laptop</div>
+                </div>
+
+                <!-- Deals from Group 4 -->
+                <div class="deal-card group4">
+                    <div class="deal-header">
+                        <span class="deal-id">#PRO456</span>
+                        <span class="deal-group-badge"><i class="fas fa-crown"></i> DVA PRO</span>
+                        <span class="deal-status status-active">ACTIVE</span>
+                    </div>
+                    <div><i class="fas fa-user"></i> @pro1 → @pro2</div>
+                    <div><i class="fas fa-coins"></i> 5,000 ETB - Phone</div>
+                </div>
+
+                <!-- Deals from Group 5 -->
+                <div class="deal-card group5">
+                    <div class="deal-header">
+                        <span class="deal-id">#TRD567</span>
+                        <span class="deal-group-badge"><i class="fas fa-handshake"></i> TRADERS</span>
+                        <span class="deal-status status-completed">COMPLETED</span>
+                    </div>
+                    <div><i class="fas fa-user"></i> @trader3 → @trader4</div>
+                    <div><i class="fas fa-dollar-sign"></i> $75 USD - Gift Card</div>
                 </div>
             </div>
         </div>
@@ -889,12 +856,29 @@
                 <i class="fas fa-file-alt"></i> CREATE NEW DEAL
             </h2>
 
-            <div class="role-selector">
-                <div class="role-option" id="buyerRole" onclick="selectRole('buyer')">
+            <!-- Group Selection -->
+            <div class="form-group">
+                <label><i class="fas fa-layer-group"></i> Select Group</label>
+                <select class="form-control" id="selectGroup">
+                    <option value="group1">DVA MAIN GROUP</option>
+                    <option value="group2">TRADING HUB</option>
+                    <option value="group3">ESCROW GROUP 1</option>
+                    <option value="group4">DVA PRO</option>
+                    <option value="group5">TRADERS GROUP</option>
+                    <option value="group6">GROUP 6</option>
+                    <option value="group7">GROUP 7</option>
+                    <option value="group8">GROUP 8</option>
+                    <option value="group9">GROUP 9</option>
+                    <option value="group10">GROUP 10</option>
+                </select>
+            </div>
+
+            <div class="role-selector" style="display: flex; gap: 1rem; margin: 1.5rem 0;">
+                <div class="role-option" id="buyerRole" onclick="selectRole('buyer')" style="flex:1; padding:1rem; border:2px solid #e0d0ff; border-radius:30px; text-align:center; cursor:pointer;">
                     <i class="fas fa-shopping-cart"></i>
                     <div>I AM BUYER</div>
                 </div>
-                <div class="role-option" id="sellerRole" onclick="selectRole('seller')">
+                <div class="role-option" id="sellerRole" onclick="selectRole('seller')" style="flex:1; padding:1rem; border:2px solid #e0d0ff; border-radius:30px; text-align:center; cursor:pointer;">
                     <i class="fas fa-store"></i>
                     <div>I AM SELLER</div>
                 </div>
@@ -902,379 +886,151 @@
 
             <form id="webDealForm">
                 <div class="form-group">
-                    <label><i class="fas fa-user"></i> Your Telegram Username</label>
+                    <label><i class="fas fa-user"></i> Your Username</label>
                     <input type="text" class="form-control" id="modalUsername" placeholder="@username" required>
                 </div>
 
-                <div class="form-group" id="counterpartyField">
+                <div class="form-group">
                     <label><i class="fas fa-user-tag"></i> Counterparty Username</label>
                     <input type="text" class="form-control" id="modalCounterparty" placeholder="@other_person" required>
                 </div>
 
-                <div class="currency-group" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label><i class="fas fa-dollar-sign"></i> Amount</label>
-                        <input type="number" class="form-control" id="modalAmount" placeholder="1000" required>
+                        <input type="number" class="form-control" id="modalAmount" required>
                     </div>
                     <div class="form-group">
                         <label><i class="fas fa-coins"></i> Currency</label>
                         <select class="form-control" id="modalCurrency">
-                            <option value="USD">USD ($)</option>
-                            <option value="ETB">ETB (ብር)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
+                            <option value="USD">USD</option>
+                            <option value="ETB">ETB</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fas fa-box"></i> Item / Service</label>
-                    <input type="text" class="form-control" id="modalItem" placeholder="e.g., iPhone 13, Gift Card" required>
+                    <label><i class="fas fa-box"></i> Item</label>
+                    <input type="text" class="form-control" id="modalItem" required>
                 </div>
 
-                <!-- PAYMENT ADDRESS (shown based on role) -->
-                <div id="paymentAddressSection" style="display: none;">
-                    <div class="payment-box">
-                        <i class="fas fa-building-columns" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                        <h4 id="paymentTitle">SELLER'S PAYMENT ADDRESS</h4>
-                        <div class="payment-address" id="paymentAddressDisplay">
-                            Bank: Commercial Bank of Ethiopia<br>
-                            Account: 100023456789<br>
-                            Name: Seller Name
-                        </div>
-                        <button type="button" class="copy-btn" onclick="copyModalAddress()" style="background: #ffd700; border: none; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer;">
-                            <i class="fas fa-copy"></i> COPY ADDRESS
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PHOTO UPLOAD (for buyers) -->
-                <div id="photoUploadSection">
-                    <div class="photo-upload" onclick="document.getElementById('modalProof').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h4>CLICK TO UPLOAD PAYMENT PROOF</h4>
-                        <p style="color: #666;">Upload screenshot of payment</p>
-                        <input type="file" id="modalProof" accept="image/*" style="display: none;" onchange="previewModalImage(this)">
-                    </div>
-                    <div id="modalImagePreview" class="preview-image" style="display: none;"></div>
-                </div>
-
-                <button type="submit" class="submit-form-btn">
-                    <i class="fas fa-paper-plane"></i> SEND FORM TO TELEGRAM BOT
+                <button type="submit" class="submit-form-btn" style="width:100%; padding:1.2rem; background:#10b981; color:white; border:none; border-radius:40px; font-size:1.2rem; margin-top:2rem;">
+                    <i class="fas fa-paper-plane"></i> SUBMIT TO GROUP
                 </button>
             </form>
         </div>
     </div>
 
     <!-- Notification -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i> Action completed!
-    </div>
+    <div id="notification" class="notification"></div>
 
     <script>
-        // ==================== MODAL FUNCTIONS ====================
         let selectedRole = 'buyer';
+        let currentGroup = 'all';
 
+        // ==================== GROUP SWITCHING ====================
+        function switchGroup(groupId) {
+            currentGroup = groupId;
+            
+            // Update buttons
+            document.querySelectorAll('.group-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Hide all group stats
+            document.querySelectorAll('[id^="stats-"]').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            if (groupId === 'all') {
+                document.getElementById('stats-all').style.display = 'block';
+                document.getElementById('currentGroupTitle').innerText = 'ALL GROUPS DASHBOARD';
+                document.getElementById('currentGroupDesc').innerText = 'Showing stats for all 100 groups';
+                document.getElementById('groupLiveBadge').innerHTML = '<i class="fas fa-bolt"></i> 100 GROUPS';
+                document.getElementById('recentDealsTitle').innerText = 'RECENT DEALS (ALL GROUPS)';
+            } else {
+                document.getElementById(`stats-${groupId}`).style.display = 'block';
+                
+                // Update title based on group
+                const groupNames = {
+                    'group1': 'DVA MAIN GROUP #1',
+                    'group2': 'TRADING HUB #2',
+                    'group3': 'ESCROW GROUP #3',
+                    'group4': 'DVA PRO #4',
+                    'group5': 'TRADERS GROUP #5',
+                    'group6': 'GROUP #6',
+                    'group7': 'GROUP #7',
+                    'group8': 'GROUP #8',
+                    'group9': 'GROUP #9',
+                    'group10': 'GROUP #10'
+                };
+                
+                document.getElementById('currentGroupTitle').innerText = groupNames[groupId];
+                document.getElementById('currentGroupDesc').innerText = 'Group specific statistics';
+                document.getElementById('groupLiveBadge').innerHTML = '<i class="fas fa-bolt"></i> ACTIVE';
+                document.getElementById('recentDealsTitle').innerText = `RECENT DEALS - ${groupNames[groupId]}`;
+            }
+        }
+
+        // ==================== MODAL FUNCTIONS ====================
         function openDealForm() {
             document.getElementById('dealFormModal').classList.add('active');
-            selectRole('buyer'); // Default to buyer
         }
 
         function closeDealForm() {
             document.getElementById('dealFormModal').classList.remove('active');
-            document.getElementById('webDealForm').reset();
-            document.getElementById('modalImagePreview').style.display = 'none';
         }
 
         function selectRole(role) {
             selectedRole = role;
-            
-            // Update UI
-            document.getElementById('buyerRole').classList.remove('selected');
-            document.getElementById('sellerRole').classList.remove('selected');
-            document.getElementById(`${role}Role`).classList.add('selected');
-
-            // Update fields based on role
-            if (role === 'buyer') {
-                document.getElementById('counterpartyField').querySelector('label').innerHTML = '<i class="fas fa-user-tag"></i> Seller Username';
-                document.getElementById('paymentAddressSection').style.display = 'block';
-                document.getElementById('paymentTitle').innerHTML = 'SELLER\'S PAYMENT ADDRESS';
-                document.getElementById('photoUploadSection').style.display = 'block';
-            } else {
-                document.getElementById('counterpartyField').querySelector('label').innerHTML = '<i class="fas fa-user-tag"></i> Buyer Username';
-                document.getElementById('paymentAddressSection').style.display = 'block';
-                document.getElementById('paymentTitle').innerHTML = 'YOUR PAYMENT ADDRESS (Enter Below)';
-                document.getElementById('photoUploadSection').style.display = 'none';
-                
-                // Show payment address input for seller
-                document.getElementById('paymentAddressDisplay').innerHTML = `
-                    <input type="text" class="form-control" placeholder="Bank Name" id="sellerBank" style="margin-bottom: 0.5rem;">
-                    <input type="text" class="form-control" placeholder="Account Number" id="sellerAccount" style="margin-bottom: 0.5rem;">
-                    <input type="text" class="form-control" placeholder="Account Name" id="sellerName">
-                `;
-            }
-        }
-
-        function previewModalImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('modalImagePreview');
-                    preview.style.display = 'block';
-                    preview.innerHTML = `<img src="${e.target.result}" style="width: 100%; border-radius: 20px;">`;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function copyModalAddress() {
-            const address = document.getElementById('paymentAddressDisplay').innerText;
-            navigator.clipboard.writeText(address);
-            showNotification('✅ Payment address copied!');
+            document.getElementById('buyerRole').style.background = role === 'buyer' ? '#8b5cf6' : 'white';
+            document.getElementById('buyerRole').style.color = role === 'buyer' ? 'white' : '#4a2b63';
+            document.getElementById('sellerRole').style.background = role === 'seller' ? '#8b5cf6' : 'white';
+            document.getElementById('sellerRole').style.color = role === 'seller' ? 'white' : '#4a2b63';
         }
 
         // ==================== FORM SUBMISSION ====================
         document.getElementById('webDealForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const group = document.getElementById('selectGroup').value;
             const username = document.getElementById('modalUsername').value;
             const counterparty = document.getElementById('modalCounterparty').value;
             const amount = document.getElementById('modalAmount').value;
             const currency = document.getElementById('modalCurrency').value;
             const item = document.getElementById('modalItem').value;
             
-            // Create formatted message for Telegram
-            let message = '';
-            if (selectedRole === 'buyer') {
-                message = `🔔 NEW DEAL FROM BUYER\n\n` +
-                         `Buyer: ${username}\n` +
-                         `Seller: ${counterparty}\n` +
-                         `Amount: ${amount} ${currency}\n` +
-                         `Item: ${item}\n` +
-                         `Status: Waiting for admin approval\n` +
-                         `Payment Proof: Attached screenshot`;
-            } else {
-                // Get seller payment address
-                const bank = document.getElementById('sellerBank')?.value || 'Bank Name';
-                const account = document.getElementById('sellerAccount')?.value || 'Account Number';
-                const name = document.getElementById('sellerName')?.value || 'Account Name';
-                
-                message = `🔔 NEW DEAL FROM SELLER\n\n` +
-                         `Seller: ${username}\n` +
-                         `Buyer: ${counterparty}\n` +
-                         `Amount: ${amount} ${currency}\n` +
-                         `Item: ${item}\n` +
-                         `Payment Address:\n` +
-                         `Bank: ${bank}\n` +
-                         `Account: ${account}\n` +
-                         `Name: ${name}`;
-            }
+            const groupNames = {
+                'group1': 'DVA MAIN',
+                'group2': 'TRADING HUB',
+                'group3': 'ESCROW 1',
+                'group4': 'DVA PRO',
+                'group5': 'TRADERS'
+            };
             
-            // Copy to clipboard (simulating sending to Telegram bot)
+            const message = `🔔 NEW DEAL - ${groupNames[group] || 'GROUP'}\n` +
+                           `Role: ${selectedRole.toUpperCase()}\n` +
+                           `User: ${username}\n` +
+                           `Counterparty: ${counterparty}\n` +
+                           `Amount: ${amount} ${currency}\n` +
+                           `Item: ${item}`;
+            
             navigator.clipboard.writeText(message);
-            
-            // Create new deal card
-            createNewDeal(username, counterparty, amount, currency, item, selectedRole);
-            
-            showNotification('✅ Form copied! Paste in Telegram bot @DvaEscrowBot');
+            showNotification(`✅ Form copied! Paste in @DvaEscrowBot for ${groupNames[group] || 'group'}`);
             closeDealForm();
         });
 
-        // ==================== CREATE NEW DEAL ====================
-        function createNewDeal(user, counterparty, amount, currency, item, role) {
-            const dealsList = document.getElementById('dealsList');
-            const dealId = 'DVA' + Math.floor(Math.random() * 1000);
-            
-            const newDeal = document.createElement('div');
-            newDeal.className = 'deal-card';
-            
-            if (role === 'buyer') {
-                newDeal.innerHTML = `
-                    <div class="deal-header">
-                        <span class="deal-id">#${dealId}</span>
-                        <span class="deal-status status-pending">PENDING ADMIN</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: Waiting</span>
-                    </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Buyer:</strong> ${user}</div>
-                        <div><i class="fas fa-store"></i> <strong>Seller:</strong> ${counterparty}</div>
-                        <div><i class="fas fa-dollar-sign"></i> <strong>Amount:</strong> ${amount} ${currency}</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> ${item}</div>
-                    </div>
-                    <div style="background: #f3e8ff; padding: 1rem; border-radius: 20px; margin: 1rem 0;">
-                        <strong><i class="fas fa-image"></i> PAYMENT PROOF:</strong>
-                        <img src="https://via.placeholder.com/300x150/8b5cf6/ffffff?text=Payment+Screenshot" class="proof-image-small">
-                    </div>
-                    <div class="deal-actions">
-                        <button class="action-btn btn-approve" onclick="approvePayment(this)">
-                            <i class="fas fa-check"></i> APPROVE PAYMENT
-                        </button>
-                        <button class="action-btn btn-reject" onclick="rejectPayment(this)">
-                            <i class="fas fa-times"></i> REJECT PAYMENT
-                        </button>
-                    </div>
-                `;
-            } else {
-                newDeal.innerHTML = `
-                    <div class="deal-header">
-                        <span class="deal-id">#${dealId}</span>
-                        <span class="deal-status status-pending">PENDING ADMIN</span>
-                        <span><i class="fas fa-user-shield"></i> Admin: Waiting</span>
-                    </div>
-                    <div class="deal-details">
-                        <div><i class="fas fa-user"></i> <strong>Seller:</strong> ${user}</div>
-                        <div><i class="fas fa-store"></i> <strong>Buyer:</strong> ${counterparty}</div>
-                        <div><i class="fas fa-dollar-sign"></i> <strong>Amount:</strong> ${amount} ${currency}</div>
-                        <div><i class="fas fa-box"></i> <strong>Item:</strong> ${item}</div>
-                    </div>
-                    <div style="background: #1e1b4b; color: white; padding: 1rem; border-radius: 20px; margin: 1rem 0;">
-                        <strong><i class="fas fa-building-columns"></i> SELLER'S PAYMENT ADDRESS:</strong>
-                        <div style="font-family: monospace; margin-top: 0.5rem;">
-                            Bank: Commercial Bank of Ethiopia<br>
-                            Account: 100023456789<br>
-                            Name: Seller Name
-                        </div>
-                    </div>
-                    <div class="deal-actions">
-                        <button class="action-btn btn-approve" onclick="approvePayment(this)">
-                            <i class="fas fa-check"></i> APPROVE SELLER
-                        </button>
-                        <button class="action-btn btn-reject" onclick="rejectPayment(this)">
-                            <i class="fas fa-times"></i> REJECT SELLER
-                        </button>
-                    </div>
-                `;
-            }
-            
-            dealsList.insertBefore(newDeal, dealsList.firstChild);
-        }
-
-        // ==================== DEAL ACTIONS ====================
-        
-        // Admin approves payment
-        function approvePayment(button) {
-            const dealCard = button.closest('.deal-card');
-            const dealId = dealCard.querySelector('.deal-id').innerText;
-            const adminName = '@MR_JOKER_UP'; // Default admin
-            
-            // Update status
-            dealCard.querySelector('.deal-status').innerText = 'ACTIVE - AWAITING SELLER';
-            dealCard.querySelector('.deal-status').className = 'deal-status status-active';
-            dealCard.querySelector('.deal-header').innerHTML = `
-                <span class="deal-id">${dealId}</span>
-                <span class="deal-status status-active">ACTIVE - AWAITING SELLER</span>
-                <span><i class="fas fa-user-shield"></i> Admin: ${adminName}</span>
-            `;
-            
-            // Update actions for seller
-            const actionsDiv = dealCard.querySelector('.deal-actions');
-            actionsDiv.innerHTML = `
-                <button class="action-btn btn-release" onclick="releaseFunds(this)">
-                    <i class="fas fa-hand-holding-usd"></i> RELEASE FUNDS
-                </button>
-            `;
-            
-            // Notify Telegram bot
-            const message = `✅ DEAL APPROVED\nDeal: ${dealId}\nAdmin: ${adminName}\nStatus: Active - Waiting for seller to release funds`;
-            navigator.clipboard.writeText(message);
-            
-            showNotification(`✅ Deal ${dealId} approved! Message copied to Telegram bot`);
-        }
-
-        // Admin rejects payment
-        function rejectPayment(button) {
-            if (confirm('Reject this payment?')) {
-                const dealCard = button.closest('.deal-card');
-                const dealId = dealCard.querySelector('.deal-id').innerText;
-                
-                // Notify Telegram bot
-                const message = `❌ PAYMENT REJECTED\nDeal: ${dealId}\nReason: Payment not verified`;
-                navigator.clipboard.writeText(message);
-                
-                dealCard.remove();
-                showNotification(`❌ Deal ${dealId} rejected - Message sent to bot`);
-            }
-        }
-
-        // Seller releases funds
-        function releaseFunds(button) {
-            const dealCard = button.closest('.deal-card');
-            const dealId = dealCard.querySelector('.deal-id').innerText;
-            
-            // Update status
-            dealCard.querySelector('.deal-status').innerText = 'COMPLETED - AWAITING PAYMENT ADDRESS';
-            dealCard.querySelector('.deal-status').className = 'deal-status status-completed';
-            
-            // Add payment address form
-            const actionsDiv = dealCard.querySelector('.deal-actions');
-            actionsDiv.innerHTML = `
-                <div style="background: #f3e8ff; padding: 1rem; border-radius: 20px; width: 100%;">
-                    <strong><i class="fas fa-building-columns"></i> ENTER PAYMENT ADDRESS:</strong>
-                    <input type="text" class="form-control" placeholder="Bank Name" style="margin-top: 0.5rem;" id="bank_${dealId}">
-                    <input type="text" class="form-control" placeholder="Account Number" style="margin-top: 0.5rem;" id="account_${dealId}">
-                    <input type="text" class="form-control" placeholder="Account Name" style="margin-top: 0.5rem;" id="name_${dealId}">
-                    <button class="action-btn btn-payment" style="margin-top: 1rem;" onclick="submitPaymentAddress('${dealId}')">
-                        <i class="fas fa-paper-plane"></i> SUBMIT ADDRESS TO BOT
-                    </button>
-                </div>
-            `;
-            
-            // Notify Telegram bot
-            const message = `💰 FUNDS RELEASED\nDeal: ${dealId}\nStatus: Completed - Waiting for seller payment address`;
-            navigator.clipboard.writeText(message);
-            
-            showNotification(`💰 Funds released for ${dealId}! Message sent to bot`);
-        }
-
-        // Buyer requests refund
-        function requestRefund(button) {
-            const dealCard = button.closest('.deal-card');
-            const dealId = dealCard.querySelector('.deal-id').innerText;
-            
-            // Update status
-            dealCard.querySelector('.deal-status').innerText = 'REFUNDED';
-            dealCard.querySelector('.deal-status').className = 'deal-status status-refunded';
-            
-            // Update actions
-            dealCard.querySelector('.deal-actions').innerHTML = `
-                <div style="color: #ef4444; text-align: center; padding: 0.5rem; width: 100%;">
-                    <i class="fas fa-undo-alt"></i> Refund Processed
-                </div>
-            `;
-            
-            // Notify Telegram bot
-            const message = `🔄 REFUND REQUESTED\nDeal: ${dealId}\nStatus: Refunded - Money returned to buyer`;
-            navigator.clipboard.writeText(message);
-            
-            showNotification(`🔄 Refund processed for ${dealId}`);
-        }
-
-        // Seller submits payment address after completion
-        function submitPaymentAddress(dealId) {
-            const bank = document.getElementById(`bank_${dealId}`)?.value || 'Bank Name';
-            const account = document.getElementById(`account_${dealId}`)?.value || 'Account Number';
-            const name = document.getElementById(`name_${dealId}`)?.value || 'Account Name';
-            
-            const message = `💳 PAYMENT ADDRESS SUBMITTED\nDeal: ${dealId}\nBank: ${bank}\nAccount: ${account}\nName: ${name}\nStatus: Ready for admin to send payment`;
-            navigator.clipboard.writeText(message);
-            
-            showNotification('✅ Payment address sent to admin!');
-        }
-
-        // ==================== UTILITY FUNCTIONS ====================
+        // ==================== NOTIFICATION ====================
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             notification.style.display = 'block';
-            
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
-        }
-
-        function copyCommand(cmd) {
-            navigator.clipboard.writeText(cmd);
-            showNotification(`✅ Command ${cmd} copied!`);
         }
 
         // Initialize
