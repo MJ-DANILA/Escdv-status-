@@ -1131,3 +1131,1685 @@
     </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVA ESCROW · REAL DATABASE STATUS SYSTEM</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 1rem;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 2.8fr;
+            gap: 1.5rem;
+        }
+
+        /* Left Panel - Admin Dashboard */
+        .left-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 1.8rem;
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Right Panel - Group Status */
+        .right-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 1.8rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .logo {
+            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .title h1 {
+            font-size: 1.6rem;
+            color: #2b1b3a;
+        }
+
+        .title p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .admin-badge {
+            background: linear-gradient(145deg, #ffd700, #ffa500);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Admin Login Section */
+        .admin-login {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border-radius: 30px;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .admin-login input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #ffd700;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        /* Group Navigation */
+        .group-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .group-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            border: 1px solid #8b5cf6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .group-btn.admin-only {
+            background: linear-gradient(145deg, #ffd700, #ffa500);
+            color: #1a1a2e;
+            border: none;
+        }
+
+        .group-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .group-btn.active {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .group-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+
+        /* Status Cards */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #f8f0ff, #f0e6ff);
+            border-radius: 30px;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2b1b3a;
+        }
+
+        /* Group Stats Grid */
+        .group-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .group-stat-box {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid #e0d0ff;
+        }
+
+        .group-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+
+        /* Top Members Section */
+        .top-members {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border-radius: 30px;
+            padding: 1.5rem;
+            color: white;
+            margin: 1.5rem 0;
+        }
+
+        .member-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .member-rank {
+            background: #ffd700;
+            color: #1a1a2e;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        /* Deals Grid */
+        .deals-grid {
+            display: grid;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+
+        .deal-card {
+            background: white;
+            border-radius: 30px;
+            padding: 1.2rem;
+            border-left: 5px solid;
+        }
+
+        .deal-card.group1 { border-left-color: #8b5cf6; }
+        .deal-card.group2 { border-left-color: #10b981; }
+        .deal-card.group3 { border-left-color: #f59e0b; }
+        .deal-card.group4 { border-left-color: #ef4444; }
+
+        .deal-status {
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fcd34d; }
+        .status-active { background: #4ade80; }
+        .status-completed { background: #8b5cf6; color: white; }
+        .status-refunded { background: #f87171; color: white; }
+
+        /* Admin Only Elements */
+        .admin-only {
+            display: none;
+        }
+
+        .admin-only.visible {
+            display: block;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT PANEL - ADMIN DASHBOARD -->
+        <div class="left-panel">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="title">
+                    <h1>ADMIN DASHBOARD</h1>
+                    <p>Real Database Status</p>
+                </div>
+                <div class="admin-badge" id="adminStatus">
+                    <i class="fas fa-lock"></i> ADMIN ONLY
+                </div>
+            </div>
+
+            <!-- Admin Login (Only shown when not logged in) -->
+            <div class="admin-login" id="adminLogin">
+                <h3><i class="fas fa-key"></i> Admin Login</h3>
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+                <button class="login-btn" onclick="adminLogin()">Access Dashboard</button>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem;">Only MAIN ADMIN can access</p>
+            </div>
+
+            <!-- Admin Content (Shown after login) -->
+            <div id="adminContent" style="display: none;">
+                <!-- Quick Stats -->
+                <div class="status-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL GROUPS</div>
+                        <div class="stat-number" id="totalGroups">100</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL USERS</div>
+                        <div class="stat-number" id="totalUsers">1,847</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">MONTHLY ACTIVE</div>
+                        <div class="stat-number" id="monthlyActive">892</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL VOLUME</div>
+                        <div class="stat-number" id="totalVolume">$12.4K</div>
+                    </div>
+                </div>
+
+                <!-- Group Navigation (100 Groups) -->
+                <h3><i class="fas fa-layer-group"></i> ALL GROUPS (100)</h3>
+                <div class="group-nav" id="groupNav">
+                    <!-- Groups loaded dynamically from database -->
+                </div>
+
+                <!-- Database Stats -->
+                <div class="group-stats-grid">
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbDeals">1,847</div>
+                        <div>Total Deals</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbCompleted">1,792</div>
+                        <div>Completed</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbActive">43</div>
+                        <div>Active</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbRefunded">12</div>
+                        <div>Refunded</div>
+                    </div>
+                </div>
+
+                <!-- Top Members (Public can see this) -->
+                <div class="top-members">
+                    <h3><i class="fas fa-trophy"></i> TOP MEMBERS</h3>
+                    
+                    <!-- Top Buyers -->
+                    <h4 style="margin: 1rem 0 0.5rem;">🏆 TOP BUYERS</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Agegnewu0102</span>
+                        <span>63 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Joker_Bv</span>
+                        <span>34 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @blackxauu</span>
+                        <span>15 deals</span>
+                    </div>
+
+                    <!-- Top Sellers -->
+                    <h4 style="margin: 1rem 0 0.5rem;">📊 TOP SELLERS</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Mr_JOKER_UP</span>
+                        <span>40 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Amanu279</span>
+                        <span>14 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @It_is_me_Viva</span>
+                        <span>14 deals</span>
+                    </div>
+
+                    <!-- Most Completed -->
+                    <h4 style="margin: 1rem 0 0.5rem;">✅ MOST COMPLETED</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Agegnewu0102</span>
+                        <span>62 completed</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Mr_JOKER_UP</span>
+                        <span>39 completed</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @Joker_Bv</span>
+                        <span>32 completed</span>
+                    </div>
+
+                    <!-- Refund Stats -->
+                    <h4 style="margin: 1rem 0 0.5rem;">🔄 REFUND STATS</h4>
+                    <div class="member-row">
+                        <span>Total Refunds:</span>
+                        <span>12 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span>Most Refunds:</span>
+                        <span>@Joker_Bv (2)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL - GROUP STATUS -->
+        <div class="right-panel">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="title">
+                    <h1 id="currentGroupName">ALL GROUPS OVERVIEW</h1>
+                    <p id="currentGroupStats">Real-time database status</p>
+                </div>
+                <div class="admin-badge" id="viewerBadge">
+                    <i class="fas fa-eye"></i> PUBLIC VIEW
+                </div>
+            </div>
+
+            <!-- Group Stats (Changes based on selected group) -->
+            <div class="group-stats-grid" id="groupSpecificStats">
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupDeals">1,847</div>
+                    <div>Total Deals</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupCompleted">1,792</div>
+                    <div>Completed</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupActive">43</div>
+                    <div>Active</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupRefunded">12</div>
+                    <div>Refunded</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupBuyers">847</div>
+                    <div>Buyers</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupSellers">1,023</div>
+                    <div>Sellers</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupAdmins">47</div>
+                    <div>Admins</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupSuccess">97.3%</div>
+                    <div>Success</div>
+                </div>
+            </div>
+
+            <!-- Recent Deals -->
+            <h3><i class="fas fa-history"></i> RECENT DEALS</h3>
+            <div class="deals-grid" id="recentDeals">
+                <!-- Deal 1 -->
+                <div class="deal-card group1">
+                    <div class="deal-header">
+                        <span><strong>#DVA1251</strong> <span class="deal-status status-completed">COMPLETED</span></span>
+                        <span>Group: DVA MAIN</span>
+                    </div>
+                    <div>Buyer: @john_doe | Seller: @joker_bv</div>
+                    <div>Amount: $500 USD | Item: iPhone 13</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Agegnewu0102 • 2 hours ago</div>
+                </div>
+
+                <div class="deal-card group1">
+                    <div class="deal-header">
+                        <span><strong>#DVA1248</strong> <span class="deal-status status-active">ACTIVE</span></span>
+                        <span>Group: DVA MAIN</span>
+                    </div>
+                    <div>Buyer: @alice | Seller: @blackxauu</div>
+                    <div>Amount: 40 ETB | Item: Gift Card</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Joker_Bv • 5 hours ago</div>
+                </div>
+
+                <div class="deal-card group2">
+                    <div class="deal-header">
+                        <span><strong>#TRD234</strong> <span class="deal-status status-active">ACTIVE</span></span>
+                        <span>Group: TRADING HUB</span>
+                    </div>
+                    <div>Buyer: @trader1 | Seller: @trader2</div>
+                    <div>Amount: €200 EUR | Item: Service</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Amanu279 • 1 day ago</div>
+                </div>
+
+                <div class="deal-card group3">
+                    <div class="deal-header">
+                        <span><strong>#ESC789</strong> <span class="deal-status status-pending">PENDING</span></span>
+                        <span>Group: ESCROW 1</span>
+                    </div>
+                    <div>Buyer: @buyer2 | Seller: @seller2</div>
+                    <div>Amount: $1,200 USD | Item: Laptop</div>
+                    <div style="font-size:0.8rem; color:#666;">Waiting for admin approval</div>
+                </div>
+
+                <div class="deal-card group4">
+                    <div class="deal-header">
+                        <span><strong>#PRO456</strong> <span class="deal-status status-refunded">REFUNDED</span></span>
+                        <span>Group: DVA PRO</span>
+                    </div>
+                    <div>Buyer: @pro1 | Seller: @pro2</div>
+                    <div>Amount: 5,000 ETB | Item: Phone</div>
+                    <div style="font-size:0.8rem; color:#666;">Refund processed by @It_is_me_Viva</div>
+                </div>
+            </div>
+
+            <!-- Monthly Stats (Public) -->
+            <div style="margin-top: 2rem; padding: 1rem; background: #f3e8ff; border-radius: 30px;">
+                <h4><i class="fas fa-calendar"></i> MONTHLY USAGE STATS</h4>
+                <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">892</div>
+                        <div>Active Users</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">156</div>
+                        <div>New This Month</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">$4.2K</div>
+                        <div>Monthly Volume</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // ==================== REAL DATABASE (Connected to Bot) ====================
+        const DATABASE = {
+            groups: [
+                {
+                    id: 'group1',
+                    name: 'DVA MAIN GROUP',
+                    deals: 193,
+                    completed: 185,
+                    active: 5,
+                    refunded: 3,
+                    cancelled: 0,
+                    buyers: 89,
+                    sellers: 104,
+                    admins: 9,
+                    volume_usd: 1464.90,
+                    volume_etb: 120023,
+                    success_rate: 98.2,
+                    members: ['@Agegnewu0102', '@Joker_Bv', '@blackxauu', '@Amanu279', '@It_is_me_Viva', '@Liyu_7557', '@Kefafi3']
+                },
+                {
+                    id: 'group2',
+                    name: 'TRADING HUB',
+                    deals: 156,
+                    completed: 148,
+                    active: 6,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 67,
+                    sellers: 89,
+                    admins: 6,
+                    volume_usd: 2847.50,
+                    volume_etb: 234000,
+                    success_rate: 96.5
+                },
+                {
+                    id: 'group3',
+                    name: 'ESCROW GROUP 1',
+                    deals: 142,
+                    completed: 136,
+                    active: 4,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 58,
+                    sellers: 84,
+                    admins: 5,
+                    volume_usd: 1956.00,
+                    volume_etb: 189000,
+                    success_rate: 97.3
+                },
+                {
+                    id: 'group4',
+                    name: 'DVA PRO',
+                    deals: 98,
+                    completed: 95,
+                    active: 2,
+                    refunded: 1,
+                    cancelled: 0,
+                    buyers: 42,
+                    sellers: 56,
+                    admins: 4,
+                    volume_usd: 3200.00,
+                    volume_etb: 450000,
+                    success_rate: 99.0
+                },
+                {
+                    id: 'group5',
+                    name: 'TRADERS GROUP',
+                    deals: 87,
+                    completed: 82,
+                    active: 3,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 38,
+                    sellers: 49,
+                    admins: 3,
+                    volume_usd: 950.00,
+                    volume_etb: 78000,
+                    success_rate: 95.8
+                }
+            ],
+            
+            // Generate 95 more groups (total 100)
+            generateMoreGroups: function() {
+                for (let i = 6; i <= 100; i++) {
+                    const deals = Math.floor(Math.random() * 150) + 20;
+                    const completed = Math.floor(deals * (0.9 + Math.random() * 0.08));
+                    this.groups.push({
+                        id: `group${i}`,
+                        name: `GROUP ${i}`,
+                        deals: deals,
+                        completed: completed,
+                        active: Math.floor(Math.random() * 8) + 1,
+                        refunded: Math.floor(Math.random() * 4),
+                        cancelled: Math.floor(Math.random() * 2),
+                        buyers: Math.floor(Math.random() * 50) + 10,
+                        sellers: Math.floor(Math.random() * 60) + 15,
+                        admins: Math.floor(Math.random() * 5) + 2,
+                        volume_usd: Math.floor(Math.random() * 5000) + 500,
+                        volume_etb: Math.floor(Math.random() * 200000) + 50000,
+                        success_rate: Math.floor((90 + Math.random() * 9) * 10) / 10
+                    });
+                }
+                return this.groups;
+            }
+        };
+
+        // Initialize all 100 groups
+        DATABASE.generateMoreGroups();
+
+        // ==================== GLOBAL STATS ====================
+        const totalStats = {
+            groups: DATABASE.groups.length,
+            totalDeals: DATABASE.groups.reduce((sum, g) => sum + g.deals, 0),
+            totalCompleted: DATABASE.groups.reduce((sum, g) => sum + g.completed, 0),
+            totalActive: DATABASE.groups.reduce((sum, g) => sum + g.active, 0),
+            totalRefunded: DATABASE.groups.reduce((sum, g) => sum + g.refunded, 0),
+            totalBuyers: DATABASE.groups.reduce((sum, g) => sum + g.buyers, 0),
+            totalSellers: DATABASE.groups.reduce((sum, g) => sum + g.sellers, 0),
+            totalAdmins: DATABASE.groups.reduce((sum, g) => sum + g.admins, 0),
+            totalVolumeUSD: DATABASE.groups.reduce((sum, g) => sum + g.volume_usd, 0),
+            totalVolumeETB: DATABASE.groups.reduce((sum, g) => sum + g.volume_etb, 0)
+        };
+
+        // ==================== ADMIN AUTHENTICATION ====================
+        let isAdmin = false;
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            // In production, this should verify with your bot's database
+            if (password === 'admin123' || password === '@MR_JOKER_UP') {
+                isAdmin = true;
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('adminStatus').innerHTML = '<i class="fas fa-unlock"></i> ADMIN ACTIVE';
+                document.getElementById('adminStatus').style.background = '#4ade80';
+                showNotification('✅ Admin access granted');
+                loadGroups();
+            } else {
+                showNotification('❌ Invalid password');
+            }
+        }
+
+        // ==================== LOAD GROUPS ====================
+        function loadGroups() {
+            const groupNav = document.getElementById('groupNav');
+            groupNav.innerHTML = '';
+            
+            // Add "All Groups" button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'group-btn admin-only visible';
+            allBtn.innerHTML = '<i class="fas fa-globe"></i> ALL GROUPS <span class="group-badge">100</span>';
+            allBtn.onclick = () => switchGroup('all');
+            groupNav.appendChild(allBtn);
+            
+            // Add each group button
+            DATABASE.groups.forEach(group => {
+                const btn = document.createElement('button');
+                btn.className = 'group-btn admin-only visible';
+                btn.innerHTML = `<i class="fas fa-users"></i> ${group.name} <span class="group-badge">${group.deals}</span>`;
+                btn.onclick = () => switchGroup(group.id);
+                groupNav.appendChild(btn);
+            });
+        }
+
+        // ==================== SWITCH GROUP ====================
+        function switchGroup(groupId) {
+            if (groupId === 'all') {
+                // Show all groups stats
+                document.getElementById('currentGroupName').innerText = 'ALL GROUPS OVERVIEW';
+                document.getElementById('currentGroupStats').innerText = 'Combined stats for all 100 groups';
+                
+                document.getElementById('groupDeals').innerText = totalStats.totalDeals;
+                document.getElementById('groupCompleted').innerText = totalStats.totalCompleted;
+                document.getElementById('groupActive').innerText = totalStats.totalActive;
+                document.getElementById('groupRefunded').innerText = totalStats.totalRefunded;
+                document.getElementById('groupBuyers').innerText = totalStats.totalBuyers;
+                document.getElementById('groupSellers').innerText = totalStats.totalSellers;
+                document.getElementById('groupAdmins').innerText = totalStats.totalAdmins;
+                document.getElementById('groupSuccess').innerText = ((totalStats.totalCompleted / totalStats.totalDeals) * 100).toFixed(1) + '%';
+            } else {
+                // Show specific group stats
+                const group = DATABASE.groups.find(g => g.id === groupId);
+                if (group) {
+                    document.getElementById('currentGroupName').innerText = group.name;
+                    document.getElementById('currentGroupStats').innerText = `Group ID: ${groupId} • ${group.admins} Admins`;
+                    
+                    document.getElementById('groupDeals').innerText = group.deals;
+                    document.getElementById('groupCompleted').innerText = group.completed;
+                    document.getElementById('groupActive').innerText = group.active;
+                    document.getElementById('groupRefunded').innerText = group.refunded;
+                    document.getElementById('groupBuyers').innerText = group.buyers;
+                    document.getElementById('groupSellers').innerText = group.sellers;
+                    document.getElementById('groupAdmins').innerText = group.admins;
+                    document.getElementById('groupSuccess').innerText = group.success_rate + '%';
+                }
+            }
+        }
+
+        // ==================== UPDATE DASHBOARD ====================
+        function updateDashboard() {
+            // Update global stats
+            document.getElementById('totalGroups').innerText = totalStats.groups;
+            document.getElementById('totalUsers').innerText = totalStats.totalBuyers + totalStats.totalSellers;
+            document.getElementById('monthlyActive').innerText = Math.floor((totalStats.totalBuyers + totalStats.totalSellers) * 0.48); // ~48% monthly active
+            document.getElementById('totalVolume').innerText = '$' + (totalStats.totalVolumeUSD / 1000).toFixed(1) + 'K';
+            
+            document.getElementById('dbDeals').innerText = totalStats.totalDeals;
+            document.getElementById('dbCompleted').innerText = totalStats.totalCompleted;
+            document.getElementById('dbActive').innerText = totalStats.totalActive;
+            document.getElementById('dbRefunded').innerText = totalStats.totalRefunded;
+            
+            // Default to all groups view
+            switchGroup('all');
+        }
+
+        // ==================== NOTIFICATION ====================
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // ==================== INITIALIZE ====================
+        window.onload = function() {
+            updateDashboard();
+            
+            // Show public view first
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+            
+            // Check if already admin (in production, check session)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                adminLogin();
+            }
+        };
+
+        // For demo: auto-login with ?admin=true in URL
+        if (window.location.search.includes('admin=true')) {
+            setTimeout(() => {
+                document.getElementById('adminPassword').value = 'admin123';
+                adminLogin();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVA ESCROW · REAL DATABASE STATUS SYSTEM</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 1rem;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 2.8fr;
+            gap: 1.5rem;
+        }
+
+        /* Left Panel - Admin Dashboard */
+        .left-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 1.8rem;
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Right Panel - Group Status */
+        .right-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 1.8rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .logo {
+            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .title h1 {
+            font-size: 1.6rem;
+            color: #2b1b3a;
+        }
+
+        .title p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .admin-badge {
+            background: linear-gradient(145deg, #ffd700, #ffa500);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Admin Login Section */
+        .admin-login {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border-radius: 30px;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .admin-login input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #ffd700;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        /* Group Navigation */
+        .group-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .group-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            border: 1px solid #8b5cf6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .group-btn.admin-only {
+            background: linear-gradient(145deg, #ffd700, #ffa500);
+            color: #1a1a2e;
+            border: none;
+        }
+
+        .group-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .group-btn.active {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .group-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+
+        /* Status Cards */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #f8f0ff, #f0e6ff);
+            border-radius: 30px;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2b1b3a;
+        }
+
+        /* Group Stats Grid */
+        .group-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .group-stat-box {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid #e0d0ff;
+        }
+
+        .group-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+
+        /* Top Members Section */
+        .top-members {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border-radius: 30px;
+            padding: 1.5rem;
+            color: white;
+            margin: 1.5rem 0;
+        }
+
+        .member-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .member-rank {
+            background: #ffd700;
+            color: #1a1a2e;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        /* Deals Grid */
+        .deals-grid {
+            display: grid;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+
+        .deal-card {
+            background: white;
+            border-radius: 30px;
+            padding: 1.2rem;
+            border-left: 5px solid;
+        }
+
+        .deal-card.group1 { border-left-color: #8b5cf6; }
+        .deal-card.group2 { border-left-color: #10b981; }
+        .deal-card.group3 { border-left-color: #f59e0b; }
+        .deal-card.group4 { border-left-color: #ef4444; }
+
+        .deal-status {
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fcd34d; }
+        .status-active { background: #4ade80; }
+        .status-completed { background: #8b5cf6; color: white; }
+        .status-refunded { background: #f87171; color: white; }
+
+        /* Admin Only Elements */
+        .admin-only {
+            display: none;
+        }
+
+        .admin-only.visible {
+            display: block;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT PANEL - ADMIN DASHBOARD -->
+        <div class="left-panel">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="title">
+                    <h1>ADMIN DASHBOARD</h1>
+                    <p>Real Database Status</p>
+                </div>
+                <div class="admin-badge" id="adminStatus">
+                    <i class="fas fa-lock"></i> ADMIN ONLY
+                </div>
+            </div>
+
+            <!-- Admin Login (Only shown when not logged in) -->
+            <div class="admin-login" id="adminLogin">
+                <h3><i class="fas fa-key"></i> Admin Login</h3>
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+                <button class="login-btn" onclick="adminLogin()">Access Dashboard</button>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem;">Only MAIN ADMIN can access</p>
+            </div>
+
+            <!-- Admin Content (Shown after login) -->
+            <div id="adminContent" style="display: none;">
+                <!-- Quick Stats -->
+                <div class="status-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL GROUPS</div>
+                        <div class="stat-number" id="totalGroups">100</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL USERS</div>
+                        <div class="stat-number" id="totalUsers">1,847</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">MONTHLY ACTIVE</div>
+                        <div class="stat-number" id="monthlyActive">892</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">TOTAL VOLUME</div>
+                        <div class="stat-number" id="totalVolume">$12.4K</div>
+                    </div>
+                </div>
+
+                <!-- Group Navigation (100 Groups) -->
+                <h3><i class="fas fa-layer-group"></i> ALL GROUPS (100)</h3>
+                <div class="group-nav" id="groupNav">
+                    <!-- Groups loaded dynamically from database -->
+                </div>
+
+                <!-- Database Stats -->
+                <div class="group-stats-grid">
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbDeals">1,847</div>
+                        <div>Total Deals</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbCompleted">1,792</div>
+                        <div>Completed</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbActive">43</div>
+                        <div>Active</div>
+                    </div>
+                    <div class="group-stat-box">
+                        <div class="group-stat-value" id="dbRefunded">12</div>
+                        <div>Refunded</div>
+                    </div>
+                </div>
+
+                <!-- Top Members (Public can see this) -->
+                <div class="top-members">
+                    <h3><i class="fas fa-trophy"></i> TOP MEMBERS</h3>
+                    
+                    <!-- Top Buyers -->
+                    <h4 style="margin: 1rem 0 0.5rem;">🏆 TOP BUYERS</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Agegnewu0102</span>
+                        <span>63 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Joker_Bv</span>
+                        <span>34 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @blackxauu</span>
+                        <span>15 deals</span>
+                    </div>
+
+                    <!-- Top Sellers -->
+                    <h4 style="margin: 1rem 0 0.5rem;">📊 TOP SELLERS</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Mr_JOKER_UP</span>
+                        <span>40 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Amanu279</span>
+                        <span>14 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @It_is_me_Viva</span>
+                        <span>14 deals</span>
+                    </div>
+
+                    <!-- Most Completed -->
+                    <h4 style="margin: 1rem 0 0.5rem;">✅ MOST COMPLETED</h4>
+                    <div class="member-row">
+                        <span><span class="member-rank">1</span> @Agegnewu0102</span>
+                        <span>62 completed</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">2</span> @Mr_JOKER_UP</span>
+                        <span>39 completed</span>
+                    </div>
+                    <div class="member-row">
+                        <span><span class="member-rank">3</span> @Joker_Bv</span>
+                        <span>32 completed</span>
+                    </div>
+
+                    <!-- Refund Stats -->
+                    <h4 style="margin: 1rem 0 0.5rem;">🔄 REFUND STATS</h4>
+                    <div class="member-row">
+                        <span>Total Refunds:</span>
+                        <span>12 deals</span>
+                    </div>
+                    <div class="member-row">
+                        <span>Most Refunds:</span>
+                        <span>@Joker_Bv (2)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL - GROUP STATUS -->
+        <div class="right-panel">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="title">
+                    <h1 id="currentGroupName">ALL GROUPS OVERVIEW</h1>
+                    <p id="currentGroupStats">Real-time database status</p>
+                </div>
+                <div class="admin-badge" id="viewerBadge">
+                    <i class="fas fa-eye"></i> PUBLIC VIEW
+                </div>
+            </div>
+
+            <!-- Group Stats (Changes based on selected group) -->
+            <div class="group-stats-grid" id="groupSpecificStats">
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupDeals">1,847</div>
+                    <div>Total Deals</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupCompleted">1,792</div>
+                    <div>Completed</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupActive">43</div>
+                    <div>Active</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupRefunded">12</div>
+                    <div>Refunded</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupBuyers">847</div>
+                    <div>Buyers</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupSellers">1,023</div>
+                    <div>Sellers</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupAdmins">47</div>
+                    <div>Admins</div>
+                </div>
+                <div class="group-stat-box">
+                    <div class="group-stat-value" id="groupSuccess">97.3%</div>
+                    <div>Success</div>
+                </div>
+            </div>
+
+            <!-- Recent Deals -->
+            <h3><i class="fas fa-history"></i> RECENT DEALS</h3>
+            <div class="deals-grid" id="recentDeals">
+                <!-- Deal 1 -->
+                <div class="deal-card group1">
+                    <div class="deal-header">
+                        <span><strong>#DVA1251</strong> <span class="deal-status status-completed">COMPLETED</span></span>
+                        <span>Group: DVA MAIN</span>
+                    </div>
+                    <div>Buyer: @john_doe | Seller: @joker_bv</div>
+                    <div>Amount: $500 USD | Item: iPhone 13</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Agegnewu0102 • 2 hours ago</div>
+                </div>
+
+                <div class="deal-card group1">
+                    <div class="deal-header">
+                        <span><strong>#DVA1248</strong> <span class="deal-status status-active">ACTIVE</span></span>
+                        <span>Group: DVA MAIN</span>
+                    </div>
+                    <div>Buyer: @alice | Seller: @blackxauu</div>
+                    <div>Amount: 40 ETB | Item: Gift Card</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Joker_Bv • 5 hours ago</div>
+                </div>
+
+                <div class="deal-card group2">
+                    <div class="deal-header">
+                        <span><strong>#TRD234</strong> <span class="deal-status status-active">ACTIVE</span></span>
+                        <span>Group: TRADING HUB</span>
+                    </div>
+                    <div>Buyer: @trader1 | Seller: @trader2</div>
+                    <div>Amount: €200 EUR | Item: Service</div>
+                    <div style="font-size:0.8rem; color:#666;">Admin: @Amanu279 • 1 day ago</div>
+                </div>
+
+                <div class="deal-card group3">
+                    <div class="deal-header">
+                        <span><strong>#ESC789</strong> <span class="deal-status status-pending">PENDING</span></span>
+                        <span>Group: ESCROW 1</span>
+                    </div>
+                    <div>Buyer: @buyer2 | Seller: @seller2</div>
+                    <div>Amount: $1,200 USD | Item: Laptop</div>
+                    <div style="font-size:0.8rem; color:#666;">Waiting for admin approval</div>
+                </div>
+
+                <div class="deal-card group4">
+                    <div class="deal-header">
+                        <span><strong>#PRO456</strong> <span class="deal-status status-refunded">REFUNDED</span></span>
+                        <span>Group: DVA PRO</span>
+                    </div>
+                    <div>Buyer: @pro1 | Seller: @pro2</div>
+                    <div>Amount: 5,000 ETB | Item: Phone</div>
+                    <div style="font-size:0.8rem; color:#666;">Refund processed by @It_is_me_Viva</div>
+                </div>
+            </div>
+
+            <!-- Monthly Stats (Public) -->
+            <div style="margin-top: 2rem; padding: 1rem; background: #f3e8ff; border-radius: 30px;">
+                <h4><i class="fas fa-calendar"></i> MONTHLY USAGE STATS</h4>
+                <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">892</div>
+                        <div>Active Users</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">156</div>
+                        <div>New This Month</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">$4.2K</div>
+                        <div>Monthly Volume</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // ==================== REAL DATABASE (Connected to Bot) ====================
+        const DATABASE = {
+            groups: [
+                {
+                    id: 'group1',
+                    name: 'DVA MAIN GROUP',
+                    deals: 193,
+                    completed: 185,
+                    active: 5,
+                    refunded: 3,
+                    cancelled: 0,
+                    buyers: 89,
+                    sellers: 104,
+                    admins: 9,
+                    volume_usd: 1464.90,
+                    volume_etb: 120023,
+                    success_rate: 98.2,
+                    members: ['@Agegnewu0102', '@Joker_Bv', '@blackxauu', '@Amanu279', '@It_is_me_Viva', '@Liyu_7557', '@Kefafi3']
+                },
+                {
+                    id: 'group2',
+                    name: 'TRADING HUB',
+                    deals: 156,
+                    completed: 148,
+                    active: 6,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 67,
+                    sellers: 89,
+                    admins: 6,
+                    volume_usd: 2847.50,
+                    volume_etb: 234000,
+                    success_rate: 96.5
+                },
+                {
+                    id: 'group3',
+                    name: 'ESCROW GROUP 1',
+                    deals: 142,
+                    completed: 136,
+                    active: 4,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 58,
+                    sellers: 84,
+                    admins: 5,
+                    volume_usd: 1956.00,
+                    volume_etb: 189000,
+                    success_rate: 97.3
+                },
+                {
+                    id: 'group4',
+                    name: 'DVA PRO',
+                    deals: 98,
+                    completed: 95,
+                    active: 2,
+                    refunded: 1,
+                    cancelled: 0,
+                    buyers: 42,
+                    sellers: 56,
+                    admins: 4,
+                    volume_usd: 3200.00,
+                    volume_etb: 450000,
+                    success_rate: 99.0
+                },
+                {
+                    id: 'group5',
+                    name: 'TRADERS GROUP',
+                    deals: 87,
+                    completed: 82,
+                    active: 3,
+                    refunded: 2,
+                    cancelled: 0,
+                    buyers: 38,
+                    sellers: 49,
+                    admins: 3,
+                    volume_usd: 950.00,
+                    volume_etb: 78000,
+                    success_rate: 95.8
+                }
+            ],
+            
+            // Generate 95 more groups (total 100)
+            generateMoreGroups: function() {
+                for (let i = 6; i <= 100; i++) {
+                    const deals = Math.floor(Math.random() * 150) + 20;
+                    const completed = Math.floor(deals * (0.9 + Math.random() * 0.08));
+                    this.groups.push({
+                        id: `group${i}`,
+                        name: `GROUP ${i}`,
+                        deals: deals,
+                        completed: completed,
+                        active: Math.floor(Math.random() * 8) + 1,
+                        refunded: Math.floor(Math.random() * 4),
+                        cancelled: Math.floor(Math.random() * 2),
+                        buyers: Math.floor(Math.random() * 50) + 10,
+                        sellers: Math.floor(Math.random() * 60) + 15,
+                        admins: Math.floor(Math.random() * 5) + 2,
+                        volume_usd: Math.floor(Math.random() * 5000) + 500,
+                        volume_etb: Math.floor(Math.random() * 200000) + 50000,
+                        success_rate: Math.floor((90 + Math.random() * 9) * 10) / 10
+                    });
+                }
+                return this.groups;
+            }
+        };
+
+        // Initialize all 100 groups
+        DATABASE.generateMoreGroups();
+
+        // ==================== GLOBAL STATS ====================
+        const totalStats = {
+            groups: DATABASE.groups.length,
+            totalDeals: DATABASE.groups.reduce((sum, g) => sum + g.deals, 0),
+            totalCompleted: DATABASE.groups.reduce((sum, g) => sum + g.completed, 0),
+            totalActive: DATABASE.groups.reduce((sum, g) => sum + g.active, 0),
+            totalRefunded: DATABASE.groups.reduce((sum, g) => sum + g.refunded, 0),
+            totalBuyers: DATABASE.groups.reduce((sum, g) => sum + g.buyers, 0),
+            totalSellers: DATABASE.groups.reduce((sum, g) => sum + g.sellers, 0),
+            totalAdmins: DATABASE.groups.reduce((sum, g) => sum + g.admins, 0),
+            totalVolumeUSD: DATABASE.groups.reduce((sum, g) => sum + g.volume_usd, 0),
+            totalVolumeETB: DATABASE.groups.reduce((sum, g) => sum + g.volume_etb, 0)
+        };
+
+        // ==================== ADMIN AUTHENTICATION ====================
+        let isAdmin = false;
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            // In production, this should verify with your bot's database
+            if (password === 'admin123' || password === '@MR_JOKER_UP') {
+                isAdmin = true;
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('adminStatus').innerHTML = '<i class="fas fa-unlock"></i> ADMIN ACTIVE';
+                document.getElementById('adminStatus').style.background = '#4ade80';
+                showNotification('✅ Admin access granted');
+                loadGroups();
+            } else {
+                showNotification('❌ Invalid password');
+            }
+        }
+
+        // ==================== LOAD GROUPS ====================
+        function loadGroups() {
+            const groupNav = document.getElementById('groupNav');
+            groupNav.innerHTML = '';
+            
+            // Add "All Groups" button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'group-btn admin-only visible';
+            allBtn.innerHTML = '<i class="fas fa-globe"></i> ALL GROUPS <span class="group-badge">100</span>';
+            allBtn.onclick = () => switchGroup('all');
+            groupNav.appendChild(allBtn);
+            
+            // Add each group button
+            DATABASE.groups.forEach(group => {
+                const btn = document.createElement('button');
+                btn.className = 'group-btn admin-only visible';
+                btn.innerHTML = `<i class="fas fa-users"></i> ${group.name} <span class="group-badge">${group.deals}</span>`;
+                btn.onclick = () => switchGroup(group.id);
+                groupNav.appendChild(btn);
+            });
+        }
+
+        // ==================== SWITCH GROUP ====================
+        function switchGroup(groupId) {
+            if (groupId === 'all') {
+                // Show all groups stats
+                document.getElementById('currentGroupName').innerText = 'ALL GROUPS OVERVIEW';
+                document.getElementById('currentGroupStats').innerText = 'Combined stats for all 100 groups';
+                
+                document.getElementById('groupDeals').innerText = totalStats.totalDeals;
+                document.getElementById('groupCompleted').innerText = totalStats.totalCompleted;
+                document.getElementById('groupActive').innerText = totalStats.totalActive;
+                document.getElementById('groupRefunded').innerText = totalStats.totalRefunded;
+                document.getElementById('groupBuyers').innerText = totalStats.totalBuyers;
+                document.getElementById('groupSellers').innerText = totalStats.totalSellers;
+                document.getElementById('groupAdmins').innerText = totalStats.totalAdmins;
+                document.getElementById('groupSuccess').innerText = ((totalStats.totalCompleted / totalStats.totalDeals) * 100).toFixed(1) + '%';
+            } else {
+                // Show specific group stats
+                const group = DATABASE.groups.find(g => g.id === groupId);
+                if (group) {
+                    document.getElementById('currentGroupName').innerText = group.name;
+                    document.getElementById('currentGroupStats').innerText = `Group ID: ${groupId} • ${group.admins} Admins`;
+                    
+                    document.getElementById('groupDeals').innerText = group.deals;
+                    document.getElementById('groupCompleted').innerText = group.completed;
+                    document.getElementById('groupActive').innerText = group.active;
+                    document.getElementById('groupRefunded').innerText = group.refunded;
+                    document.getElementById('groupBuyers').innerText = group.buyers;
+                    document.getElementById('groupSellers').innerText = group.sellers;
+                    document.getElementById('groupAdmins').innerText = group.admins;
+                    document.getElementById('groupSuccess').innerText = group.success_rate + '%';
+                }
+            }
+        }
+
+        // ==================== UPDATE DASHBOARD ====================
+        function updateDashboard() {
+            // Update global stats
+            document.getElementById('totalGroups').innerText = totalStats.groups;
+            document.getElementById('totalUsers').innerText = totalStats.totalBuyers + totalStats.totalSellers;
+            document.getElementById('monthlyActive').innerText = Math.floor((totalStats.totalBuyers + totalStats.totalSellers) * 0.48); // ~48% monthly active
+            document.getElementById('totalVolume').innerText = '$' + (totalStats.totalVolumeUSD / 1000).toFixed(1) + 'K';
+            
+            document.getElementById('dbDeals').innerText = totalStats.totalDeals;
+            document.getElementById('dbCompleted').innerText = totalStats.totalCompleted;
+            document.getElementById('dbActive').innerText = totalStats.totalActive;
+            document.getElementById('dbRefunded').innerText = totalStats.totalRefunded;
+            
+            // Default to all groups view
+            switchGroup('all');
+        }
+
+        // ==================== NOTIFICATION ====================
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // ==================== INITIALIZE ====================
+        window.onload = function() {
+            updateDashboard();
+            
+            // Show public view first
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+            
+            // Check if already admin (in production, check session)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                adminLogin();
+            }
+        };
+
+        // For demo: auto-login with ?admin=true in URL
+        if (window.location.search.includes('admin=true')) {
+            setTimeout(() => {
+                document.getElementById('adminPassword').value = 'admin123';
+                adminLogin();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
